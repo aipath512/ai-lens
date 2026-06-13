@@ -21,7 +21,10 @@ h1 em{color:var(--gold)}
 .heroimg{max-width:980px;margin:24px auto;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#111}
 .heroimg img{display:block;width:100%;height:auto}
 .form{max-width:780px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
-.row{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:10px}
+.row{display:grid;grid-template-columns:1fr;gap:10px}
+.lead-title{text-align:left;color:var(--gold);font-size:13px;font-weight:700;margin:12px 0 8px}
+.lead-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:800px){.lead-row{grid-template-columns:1fr}}
 input{width:100%;padding:14px 14px;border-radius:10px;border:1px solid var(--line);background:#0f1218;color:var(--text);font-size:14px}
 button{border:0;border-radius:10px;padding:14px 18px;background:var(--gold);color:#111;font-weight:700;cursor:pointer}
 button:hover{opacity:.9}
@@ -62,11 +65,16 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:12px;text-a
 
 <div class="form">
 <div class="row">
-<input id="url" placeholder="https://yourcompany.com" value="https://5thelement.ai">
-<input id="email" placeholder="Email for report">
-<input id="whatsapp" placeholder="WhatsApp +40...">
+<input id="url" placeholder="Website to scan: https://yourcompany.com" value="https://5thelement.ai">
 </div>
-<label class="consent"><input id="consent" type="checkbox"> <span>I agree to be contacted about my AI LENS™ report. Optional for testing; required before sending.</span></label>
+
+<div class="lead-title">Where should we send the report?</div>
+<div class="lead-row">
+<input id="email" type="email" placeholder="Email address">
+<input id="whatsapp" type="tel" placeholder="WhatsApp number +40...">
+</div>
+
+<label class="consent"><input id="consent" type="checkbox"> <span>I agree to be contacted about my AI LENS™ report. The scan works without this, but sending/saving the report needs consent.</span></label>
 <button id="run">Run free AI LENS scan</button>
 <div id="status" class="status">This V1.2 test version works without backend, without Chart.js, and without Cloudflare Functions.</div>
 </div>
@@ -88,9 +96,17 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:12px;text-a
 <div id="gaps"></div>
 </div>
 
+<div class="form" style="margin-top:22px">
+<div class="lead-title">Send / save this report</div>
+<div class="lead-row">
+<input id="email2" type="email" placeholder="Email address">
+<input id="whatsapp2" type="tel" placeholder="WhatsApp number +40...">
+</div>
+<label class="consent"><input id="consent2" type="checkbox"> <span>I agree to be contacted about this AI LENS™ report.</span></label>
 <div class="actions">
 <button id="emailBtn">Prepare email report</button>
 <button id="waBtn" class="secondary">Prepare WhatsApp report</button>
+</div>
 </div>
 <div class="status" style="text-align:center">For real automatic sending and CRM saving, connect Resend/Airtable/Zoho later. This version proves the scan works first.</div>
 </section>
@@ -149,11 +165,12 @@ function run(){
 }
 document.getElementById("run").addEventListener("click",run);
 document.getElementById("emailBtn").addEventListener("click",()=>{
- const to=document.getElementById("email").value.trim();
+ const to=(document.getElementById("email2")?.value.trim() || document.getElementById("email").value.trim());
+ if(!to){alert("Enter an email address first."); return;}
  window.location.href="mailto:"+encodeURIComponent(to)+"?subject="+encodeURIComponent("AI LENS report")+"&body="+encodeURIComponent(lastReport||"Run the scan first.");
 });
 document.getElementById("waBtn").addEventListener("click",()=>{
- const phone=document.getElementById("whatsapp").value.replace(/[^0-9]/g,"");
+ const phone=(document.getElementById("whatsapp2")?.value || document.getElementById("whatsapp").value).replace(/[^0-9]/g,"");
  const url=(phone?"https://wa.me/"+phone:"https://wa.me/")+"?text="+encodeURIComponent(lastReport||"Run the scan first.");
  window.open(url,"_blank");
 });
