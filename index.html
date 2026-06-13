@@ -43,18 +43,96 @@
 </div>
 <script>
 const levelNames=["L01 Findable™","L02 Understandable™","L03 Verifiable™","L04 Trustable™","L05 Recommendable™","... up to L15 Defining™"];
-const gapTexts=[
-"ICP gap: AI does not know exactly who your best customer is",
-"Offer gap: AI cannot summarize your value in one simple sentence",
-"Proof gap: AI does not see enough evidence to trust your claims",
-"Trust gap: AI finds weak or inconsistent identity, contact, or legal signals",
-"Discovery signal: AI can identify the business name and website"
+
+// Gap definitions, each tied to a score threshold and the score index that drives it.
+// scores = [overall, findable, understandable, verifiable, trustable]
+const gapDefs=[
+  {key:"icp",     idx:2, label:"ICP gap",      ok:"AI can identify your ideal customer profile",            bad:"AI does not know exactly who your best customer is"},
+  {key:"offer",   idx:2, label:"Offer gap",    ok:"AI can summarize your value in one simple sentence",     bad:"AI cannot summarize your value in one simple sentence"},
+  {key:"proof",   idx:3, label:"Proof gap",    ok:"AI finds sufficient evidence to trust your claims",      bad:"AI does not see enough evidence to trust your claims"},
+  {key:"trust",   idx:4, label:"Trust gap",    ok:"AI finds consistent identity, contact, and legal signals", bad:"AI finds weak or inconsistent identity, contact, or legal signals"},
+  {key:"discovery", idx:1, label:"Discovery signal", ok:"AI can identify the business name and website",   bad:"AI cannot reliably find the business name and website"}
 ];
-function hash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return Math.abs(h)}function rnd(seed){let x=Math.sin(seed)*10000;return x-Math.floor(x)}function normUrl(u){u=(u||"").trim();if(!u)return "";if(!/^https?:\/\//i.test(u))u="https://"+u;return u}
-function render(scores){document.getElementById("score").textContent=scores[0];document.getElementById("s1").textContent=scores[1];document.getElementById("s2").textContent=scores[2];document.getElementById("s3").textContent=scores[3];document.getElementById("s4").textContent=scores[4];document.getElementById("bars").innerHTML=levelNames.map((l,i)=>{const sc=scores[i+1]||Math.max(18,scores[0]-i*5);const color=i<1?"var(--green)":i<2?"#8bc714":i<3?"var(--yellow)":i<4?"var(--orange)":"var(--red)";return `<div class="barline"><span>${l}</span><div class="track"><div class="fill" style="width:${sc}%;background:${color}"></div></div><b>${sc}</b></div>`}).join("");document.getElementById("gaps").innerHTML=gapTexts.map((g,i)=>`<div class="gap"><span class="dot ${i<1?'dred':i<4?'dyel':'dgreen'}">${i<1?'×':i<4?'?':'✓'}</span><span>${g}</span></div>`).join("")}
-function report(url,scores){return `AI LENS™ Free Scan\n\nWebsite: ${url}\nRecommendation Readiness™: ${scores[0]}/100\nFindable™: ${scores[1]}/100\nUnderstandable™: ${scores[2]}/100\nVerifiable™: ${scores[3]}/100\nTrustable™: ${scores[4]}/100\n\nTop AI decision gaps:\n- ${gapTexts.join("\n- ")}\n\nNext step: contact@5thelement.ai`}
-async function send(report,url){const email=document.getElementById("email").value.trim();const consent=document.getElementById("consent").checked;if(!email||!consent)return;try{await fetch("/api/send-report",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,scanned_url:url,report})})}catch(e){console.warn(e)}}
-document.getElementById("run").addEventListener("click",()=>{const url=normUrl(document.getElementById("url").value);const st=document.getElementById("status");if(!url){st.textContent="Please enter a website URL.";return}document.getElementById("url").value=url;st.textContent="Scanning "+url+"...";setTimeout(()=>{const seed=hash(url);const overall=Math.round(50+rnd(seed)*31);const s1=Math.min(96,Math.round(overall+18+rnd(seed+1)*8));const s2=Math.min(90,Math.round(overall+2+rnd(seed+2)*8));const s3=Math.max(12,Math.round(overall-24+rnd(seed+3)*10));const s4=Math.max(10,Math.round(overall-31+rnd(seed+4)*8));const scores=[overall,s1,s2,s3,s4];render(scores);st.textContent="Scan complete. Report prepared.";send(report(url,scores),url)},500)})
+const THRESHOLD=55; // score >= THRESHOLD => passing (green)
+
+function hash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return Math.abs(h)}
+function rnd(seed){let x=Math.sin(seed)*10000;return x-Math.floor(x)}
+function normUrl(u){u=(u||"").trim();if(!u)return "";if(!/^https?:\/\//i.test(u))u="https://"+u;return u}
+
+function buildGaps(scores){
+  return gapDefs.map(def=>{
+    const val=scores[def.idx];
+    const pass=val>=THRESHOLD;
+    return {label:def.label, text: pass?def.ok:def.bad, pass};
+  });
+}
+
+function render(scores){
+  document.getElementById("score").textContent=scores[0];
+  document.getElementById("s1").textContent=scores[1];
+  document.getElementById("s2").textContent=scores[2];
+  document.getElementById("s3").textContent=scores[3];
+  document.getElementById("s4").textContent=scores[4];
+  document.getElementById("bars").innerHTML=levelNames.map((l,i)=>{
+    const sc=scores[i+1]||Math.max(18,scores[0]-i*5);
+    const color=i<1?"var(--green)":i<2?"#8bc714":i<3?"var(--yellow)":i<4?"var(--orange)":"var(--red)";
+    return `<div class="barline"><span>${l}</span><div class="track"><div class="fill" style="width:${sc}%;background:${color}"></div></div><b>${sc}</b></div>`
+  }).join("");
+
+  const gaps=buildGaps(scores);
+  document.getElementById("gaps").innerHTML=gaps.map(g=>{
+    const dotClass=g.pass?"dgreen":"dyel";
+    const symbol=g.pass?"✓":"?";
+    return `<div class="gap"><span class="dot ${dotClass}">${symbol}</span><span><b>${g.label}:</b> ${g.text}</span></div>`
+  }).join("");
+}
+
+function report(url,scores){
+  const gaps=buildGaps(scores);
+  return `AI LENS™ Free Scan
+
+Website: ${url}
+Recommendation Readiness™: ${scores[0]}/100
+Findable™: ${scores[1]}/100
+Understandable™: ${scores[2]}/100
+Verifiable™: ${scores[3]}/100
+Trustable™: ${scores[4]}/100
+
+Top AI decision gaps:
+${gaps.map(g=>`- ${g.pass?"✓":"?"} ${g.label}: ${g.text}`).join("\n")}
+
+Next step: contact@5thelement.ai`;
+}
+
+async function send(reportText,url){
+  const email=document.getElementById("email").value.trim();
+  const consent=document.getElementById("consent").checked;
+  if(!email||!consent)return;
+  try{
+    await fetch("/api/send-report",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,scanned_url:url,report:reportText})})
+  }catch(e){console.warn(e)}
+}
+
+document.getElementById("run").addEventListener("click",()=>{
+  const url=normUrl(document.getElementById("url").value);
+  const st=document.getElementById("status");
+  if(!url){st.textContent="Please enter a website URL.";return}
+  document.getElementById("url").value=url;
+  st.textContent="Scanning "+url+"...";
+  setTimeout(()=>{
+    const seed=hash(url);
+    const overall=Math.round(50+rnd(seed)*31);
+    const s1=Math.min(96,Math.round(overall+18+rnd(seed+1)*8));
+    const s2=Math.min(90,Math.round(overall+2+rnd(seed+2)*8));
+    const s3=Math.max(12,Math.round(overall-24+rnd(seed+3)*10));
+    const s4=Math.max(10,Math.round(overall-31+rnd(seed+4)*8));
+    const scores=[overall,s1,s2,s3,s4];
+    render(scores);
+    st.textContent="Scan complete. Report prepared.";
+    send(report(url,scores),url)
+  },500)
+});
+
 render([62,84,61,28,22]);
 </script>
 </body>
