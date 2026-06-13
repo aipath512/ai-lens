@@ -104,7 +104,8 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:12px;text-a
 </div>
 <label class="consent"><input id="consent2" type="checkbox"> <span>I agree to be contacted about this AI LENS™ report.</span></label>
 <div class="actions">
-<button id="emailBtn">Prepare email report</button>
+<button id="autoEmailBtn">Send report automatically</button>
+<button id="emailBtn" class="secondary">Open email app</button>
 <button id="waBtn" class="secondary">Prepare WhatsApp report</button>
 </div>
 </div>
@@ -164,6 +165,48 @@ function run(){
  },400);
 }
 document.getElementById("run").addEventListener("click",run);
+
+async function sendAutomaticReport(){
+ const emailTop=document.getElementById("email")?.value.trim() || "";
+ const emailBottom=document.getElementById("email2")?.value.trim() || "";
+ const email=emailBottom || emailTop;
+ const whatsapp=(document.getElementById("whatsapp2")?.value || document.getElementById("whatsapp")?.value || "").trim();
+ const consent=(document.getElementById("consent2")?.checked || document.getElementById("consent")?.checked || false);
+ const targetUrl=document.getElementById("url").value.trim();
+
+ if(!email){ alert("Enter the client email address first."); return; }
+ if(!consent){ alert("Please check the consent box first."); return; }
+ if(!lastReport){ alert("Run the scan first."); return; }
+
+ const btn=document.getElementById("autoEmailBtn");
+ if(btn){ btn.disabled=true; btn.textContent="Sending..."; }
+
+ try{
+   const res=await fetch("/api/send-report",{
+     method:"POST",
+     headers:{"Content-Type":"application/json"},
+     body:JSON.stringify({
+       email,
+       whatsapp,
+       scanned_url:targetUrl,
+       report:lastReport,
+       source_site:location.hostname || "1clic-ia.eu",
+       score:document.getElementById("score")?.textContent || "",
+       green:document.getElementById("green")?.textContent || "",
+       yellow:document.getElementById("yellow")?.textContent || "",
+       red:document.getElementById("red")?.textContent || ""
+     })
+   });
+   const data=await res.json();
+   if(!res.ok || !data.ok) throw new Error(data.error || "Email API error");
+   alert("Report sent to client and copy sent to owner.");
+ }catch(e){
+   alert("Automatic email failed: "+e.message+". Check RESEND_API_KEY, FROM_EMAIL, OWNER_EMAIL in Cloudflare.");
+ }finally{
+   if(btn){ btn.disabled=false; btn.textContent="Send report automatically"; }
+ }
+}
+
 document.getElementById("emailBtn").addEventListener("click",()=>{
  const to=(document.getElementById("email2")?.value.trim() || document.getElementById("email").value.trim());
  if(!to){alert("Enter an email address first."); return;}
@@ -174,6 +217,7 @@ document.getElementById("waBtn").addEventListener("click",()=>{
  const url=(phone?"https://wa.me/"+phone:"https://wa.me/")+"?text="+encodeURIComponent(lastReport||"Run the scan first.");
  window.open(url,"_blank");
 });
+document.getElementById("autoEmailBtn")?.addEventListener("click",sendAutomaticReport);
 </script>
 </body>
 </html>
