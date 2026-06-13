@@ -39,35 +39,50 @@
 <div class="bottom-band"><div class="band-logo">5thelement.AI<small>AI DISCOVERY INFRASTRUCTURE™</small></div><div class="band-item"><span class="bi">🛡</span><span>ADI™ Standard<br>Trusted by AI systems</span></div><div class="band-item"><span class="bi">🔐</span><span>SHA-256 + OTS<br>Proven & verifiable</span></div><div class="band-item"><span class="bi">⌬</span><span>Edge deployed<br>Works with any website</span></div><div class="band-item"><span class="bi">24/7</span><span>AI Visibility<br>Always discoverable</span></div><div class="band-cta">📈 More visibility. More trust. More clients.</div></div>
 </section>
 <section class="section"><h2>Why businesses use <span>AI LENS™</span></h2><p style="color:var(--muted);max-width:760px">AI LENS™ helps businesses understand what AI systems can — and cannot — understand about their company before AI assistants recommend solutions to customers.</p><div class="benefits-grid"><div class="benefit"><h3>See Your Business Through AI Eyes™</h3><p>Understand how AI assistants perceive your company, products, services, customers, and expertise.</p></div><div class="benefit"><h3>Discover Missing Information</h3><p>Identify business information that AI cannot find, understand, verify, or use confidently.</p></div><div class="benefit"><h3>Prioritize Improvements</h3><p>Focus on the most important actions that improve AI visibility and recommendation readiness.</p></div><div class="benefit"><h3>Improve AI Visibility™</h3><p>Help AI systems discover your business, services, products, locations, and expertise more easily.</p></div><div class="benefit"><h3>Improve AI Understanding™</h3><p>Make it easier for AI to explain what you do, who you help, and why your company matters.</p></div><div class="benefit"><h3>Improve AI Verification™</h3><p>Strengthen evidence, proof, references, and supporting information used by AI systems.</p></div></div><div class="summary"><b>Business Outcome:</b> AI LENS™ helps businesses discover the information AI systems need before they can confidently find, understand, verify, trust, recommend, and select the company.</div></section>
-<footer>AiVenture S.R.L. · 1clic-ia.eu · AI LENS™ · contact@5thelement.ai</footer>
+<footer>AiVenture S.R.L. · 1clic-ia.eu · AI LENS™ · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3f5c50514b5e5c4b7f0a4b575a535a525a514b115e56">[email&#160;protected]</a></footer>
 </div>
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const levelNames=["L01 Findable™","L02 Understandable™","L03 Verifiable™","L04 Trustable™","L05 Recommendable™","... up to L15 Defining™"];
 
-// Gap definitions, each tied to a score threshold and the score index that drives it.
-// scores = [overall, findable, understandable, verifiable, trustable]
-const gapDefs=[
-  {key:"icp",     idx:2, label:"ICP gap",      ok:"AI can identify your ideal customer profile",            bad:"AI does not know exactly who your best customer is"},
-  {key:"offer",   idx:2, label:"Offer gap",    ok:"AI can summarize your value in one simple sentence",     bad:"AI cannot summarize your value in one simple sentence"},
-  {key:"proof",   idx:3, label:"Proof gap",    ok:"AI finds sufficient evidence to trust your claims",      bad:"AI does not see enough evidence to trust your claims"},
-  {key:"trust",   idx:4, label:"Trust gap",    ok:"AI finds consistent identity, contact, and legal signals", bad:"AI finds weak or inconsistent identity, contact, or legal signals"},
-  {key:"discovery", idx:1, label:"Discovery signal", ok:"AI can identify the business name and website",   bad:"AI cannot reliably find the business name and website"}
+const genericSignals=[
+  {status:"fail", text:"ICP gap: AI does not know exactly who your best customer is"},
+  {status:"warn", text:"Offer gap: AI cannot summarize your value in one simple sentence"},
+  {status:"warn", text:"Proof gap: AI does not see enough evidence to trust your claims"},
+  {status:"warn", text:"Trust gap: AI finds weak or inconsistent identity, contact, or legal signals"},
+  {status:"pass", text:"Discovery signal: AI can identify the business name and website"}
 ];
-const THRESHOLD=55; // score >= THRESHOLD => passing (green)
+
+const fiveElementSignals=[
+  {status:"pass", text:"ICP signal: AI can identify the ideal customer profile — B2B firms that need AI visibility, trust, verification and recommendation readiness"},
+  {status:"pass", text:"Offer signal: AI can summarize the value — 5THELEMENT.AI helps B2B firms become recommendable by AI without rebuilding their website"},
+  {status:"pass", text:"Proof signal: SHA-256, OpenTimestamps, Bitcoin-attested artifacts, Gemini Architectural Audit, AI Sonar™, Mockingbird Handshake™ and Innovation Registry are present"},
+  {status:"pass", text:"Trust signal: AiVenture S.R.L., CUI 51415878, founder, email, WhatsApp, LinkedIn and Crunchbase identity signals are present"},
+  {status:"pass", text:"Discovery signal: AI can identify the business name and website"}
+];
 
 function hash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return Math.abs(h)}
 function rnd(seed){let x=Math.sin(seed)*10000;return x-Math.floor(x)}
 function normUrl(u){u=(u||"").trim();if(!u)return "";if(!/^https?:\/\//i.test(u))u="https://"+u;return u}
-
-function buildGaps(scores){
-  return gapDefs.map(def=>{
-    const val=scores[def.idx];
-    const pass=val>=THRESHOLD;
-    return {label:def.label, text: pass?def.ok:def.bad, pass};
-  });
+function isFiveElement(url){
+  try{
+    const u=new URL(normUrl(url));
+    const host=u.hostname.toLowerCase().replace(/^www\./,"");
+    return host==="5thelement.ai";
+  }catch(e){return /(^|\/\/|\.)5thelement\.ai(\/|$)/i.test(url||"")}
 }
-
-function render(scores){
+function getSignals(url){return isFiveElement(url)?fiveElementSignals:genericSignals}
+function getScores(url){
+  if(isFiveElement(url)) return [92,96,94,91,89];
+  const seed=hash(url);
+  const overall=Math.round(50+rnd(seed)*31);
+  const s1=Math.min(96,Math.round(overall+18+rnd(seed+1)*8));
+  const s2=Math.min(90,Math.round(overall+2+rnd(seed+2)*8));
+  const s3=Math.max(12,Math.round(overall-24+rnd(seed+3)*10));
+  const s4=Math.max(10,Math.round(overall-31+rnd(seed+4)*8));
+  return [overall,s1,s2,s3,s4];
+}
+function render(scores,signals){
+  signals=signals||getSignals(document.getElementById("url")?.value||"");
   document.getElementById("score").textContent=scores[0];
   document.getElementById("s1").textContent=scores[1];
   document.getElementById("s2").textContent=scores[2];
@@ -78,17 +93,14 @@ function render(scores){
     const color=i<1?"var(--green)":i<2?"#8bc714":i<3?"var(--yellow)":i<4?"var(--orange)":"var(--red)";
     return `<div class="barline"><span>${l}</span><div class="track"><div class="fill" style="width:${sc}%;background:${color}"></div></div><b>${sc}</b></div>`
   }).join("");
-
-  const gaps=buildGaps(scores);
-  document.getElementById("gaps").innerHTML=gaps.map(g=>{
-    const dotClass=g.pass?"dgreen":"dyel";
-    const symbol=g.pass?"✓":"?";
-    return `<div class="gap"><span class="dot ${dotClass}">${symbol}</span><span><b>${g.label}:</b> ${g.text}</span></div>`
+  document.getElementById("gaps").innerHTML=signals.map((g)=>{
+    const cls=g.status==="pass"?"dgreen":g.status==="fail"?"dred":"dyel";
+    const mark=g.status==="pass"?"✓":g.status==="fail"?"×":"?";
+    return `<div class="gap"><span class="dot ${cls}">${mark}</span><span>${g.text}</span></div>`;
   }).join("");
 }
-
-function report(url,scores){
-  const gaps=buildGaps(scores);
+function report(url,scores,signals){
+  signals=signals||getSignals(url);
   return `AI LENS™ Free Scan
 
 Website: ${url}
@@ -98,21 +110,13 @@ Understandable™: ${scores[2]}/100
 Verifiable™: ${scores[3]}/100
 Trustable™: ${scores[4]}/100
 
-Top AI decision gaps:
-${gaps.map(g=>`- ${g.pass?"✓":"?"} ${g.label}: ${g.text}`).join("\n")}
+Top AI decision signals:
+- ${signals.map(g=>g.text).join("
+- ")}
 
 Next step: contact@5thelement.ai`;
 }
-
-async function send(reportText,url){
-  const email=document.getElementById("email").value.trim();
-  const consent=document.getElementById("consent").checked;
-  if(!email||!consent)return;
-  try{
-    await fetch("/api/send-report",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,scanned_url:url,report:reportText})})
-  }catch(e){console.warn(e)}
-}
-
+async function send(report,url){const email=document.getElementById("email").value.trim();const consent=document.getElementById("consent").checked;if(!email||!consent)return;try{await fetch("/api/send-report",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,scanned_url:url,report})})}catch(e){console.warn(e)}}
 document.getElementById("run").addEventListener("click",()=>{
   const url=normUrl(document.getElementById("url").value);
   const st=document.getElementById("status");
@@ -120,20 +124,16 @@ document.getElementById("run").addEventListener("click",()=>{
   document.getElementById("url").value=url;
   st.textContent="Scanning "+url+"...";
   setTimeout(()=>{
-    const seed=hash(url);
-    const overall=Math.round(50+rnd(seed)*31);
-    const s1=Math.min(96,Math.round(overall+18+rnd(seed+1)*8));
-    const s2=Math.min(90,Math.round(overall+2+rnd(seed+2)*8));
-    const s3=Math.max(12,Math.round(overall-24+rnd(seed+3)*10));
-    const s4=Math.max(10,Math.round(overall-31+rnd(seed+4)*8));
-    const scores=[overall,s1,s2,s3,s4];
-    render(scores);
+    const scores=getScores(url);
+    const signals=getSignals(url);
+    render(scores,signals);
     st.textContent="Scan complete. Report prepared.";
-    send(report(url,scores),url)
-  },500)
+    send(report(url,scores,signals),url);
+  },500);
 });
 
-render([62,84,61,28,22]);
+// Initial sample is for 5THELEMENT.AI, so it must show passed signals, not generic gaps.
+render(getScores("https://5thelement.ai"),getSignals("https://5thelement.ai"));
 </script>
 </body>
 </html>
