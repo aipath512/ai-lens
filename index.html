@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI LENS™ — 5thelement.ai | What AI can see about your business</title>
+<meta name="description" content="AI LENS™ scans your public business information across 15 levels and 225 questions — the same questions AI assistants need to answer before they can find, understand, verify, trust, recommend and select you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{
+    --bg:#0a0c0f;
+    --bg-elev:#11141a;
+    --bg-card:#15181f;
+    --border:#23272f;
+    --gold:#f5c842;
+    --gold-dim:#9c8330;
+    --text:#f5f5f0;
+    --text-dim:#9aa0ac;
+    --text-faint:#5b626f;
+    --green:#5dcaa5;
+    --yellow:#f5c842;
+    --red:#e0635e;
+    --serif:'Playfair Display',serif;
+    --sans:'Inter',sans-serif;
+    --radius:10px;
+    --maxw:1140px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--gold);text-decoration:none;}
+  img{max-width:100%;display:block;}
+
+  /* ===== HEADER ===== */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(10,12,15,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{
+    max-width:var(--maxw);margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 24px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-mark{
+    font-family:var(--serif);font-style:italic;font-weight:500;
+    font-size:20px;letter-spacing:0.01em;color:var(--text);
+  }
+  .brand-mark span{color:var(--gold);}
+  .brand-sub{font-size:11px;color:var(--text-faint);letter-spacing:0.12em;text-transform:uppercase;margin-top:1px;}
+  .nav-links{display:flex;gap:32px;align-items:center;}
+  .nav-links a{font-size:14px;color:var(--text-dim);transition:color 0.2s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{
+    border:1px solid var(--gold);color:var(--gold);
+    padding:8px 18px;border-radius:6px;font-size:13px;font-weight:500;
+    transition:all 0.2s;
+  }
+  .nav-cta:hover{background:var(--gold);color:#0a0c0f;}
+  .hamburger{
+    display:none;flex-direction:column;justify-content:center;gap:5px;
+    width:28px;height:28px;cursor:pointer;background:none;border:none;
+  }
+  .hamburger span{display:block;height:2px;width:100%;background:var(--text);border-radius:1px;transition:0.25s;}
+  .mobile-menu{
+    display:none;flex-direction:column;gap:0;
+    border-top:1px solid var(--border);
+    background:var(--bg-elev);
+  }
+  .mobile-menu a{
+    padding:16px 24px;font-size:14px;color:var(--text-dim);
+    border-bottom:1px solid var(--border);
+  }
+  .mobile-menu.open{display:flex;}
+
+  @media (max-width:860px){
+    .nav-links{display:none;}
+    .hamburger{display:flex;}
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    max-width:var(--maxw);margin:0 auto;
+    padding:72px 24px 48px;
+    text-align:center;
+  }
+  .eyebrow{
+    font-size:12px;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--gold);font-weight:600;margin-bottom:20px;
+  }
+  .eyebrow .sep{color:var(--text-faint);margin:0 8px;}
+  h1{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(34px,6vw,58px);
+    line-height:1.15;letter-spacing:-0.01em;
+    margin-bottom:18px;
+  }
+  h1 em{font-style:italic;color:var(--gold);}
+  .hero-sub{
+    max-width:620px;margin:0 auto 40px;
+    font-size:16px;color:var(--text-dim);
+  }
+
+  /* ===== SCAN BOX ===== */
+  .scan-box{
+    max-width:680px;margin:0 auto 16px;
+    display:flex;gap:10px;
+    background:var(--bg-elev);
+    border:1px solid var(--border);
+    border-radius:50px;
+    padding:6px 6px 6px 24px;
+    align-items:center;
+  }
+  .scan-box input{
+    flex:1;background:none;border:none;outline:none;
+    color:var(--text);font-size:15px;font-family:var(--sans);
+    padding:12px 0;
+  }
+  .scan-box input::placeholder{color:var(--text-faint);}
+  .scan-box button{
+    background:var(--gold);color:#0a0c0f;border:none;
+    border-radius:44px;padding:13px 28px;
+    font-size:14px;font-weight:600;font-family:var(--sans);
+    cursor:pointer;white-space:nowrap;
+    transition:opacity 0.2s;
+  }
+  .scan-box button:hover{opacity:0.88;}
+  .scan-box button:disabled{opacity:0.5;cursor:wait;}
+  .status-line{
+    text-align:center;font-size:13px;color:var(--text-faint);
+    margin-bottom:48px;min-height:18px;
+  }
+
+  @media (max-width:560px){
+    .scan-box{flex-direction:column;border-radius:18px;padding:14px;}
+    .scan-box input{padding:8px 0;text-align:center;}
+    .scan-box button{width:100%;}
+  }
+
+  /* ===== SECTION SHELL ===== */
+  section{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  .section-head{margin-bottom:28px;}
+  .section-head h2{
+    font-family:var(--serif);font-weight:500;font-size:28px;
+    margin-bottom:8px;
+  }
+  .section-head h2 em{font-style:italic;color:var(--gold);}
+  .section-head p{color:var(--text-dim);font-size:14px;max-width:620px;}
+
+  /* ===== SUMMARY CARDS ===== */
+  .summary-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:12px;margin-bottom:40px;
+  }
+  .stat-card{
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:var(--radius);padding:18px 20px;
+  }
+  .stat-card .label{font-size:12px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;}
+  .stat-card .value{font-family:var(--serif);font-size:28px;font-weight:500;}
+  .stat-card .value.green{color:var(--green);}
+  .stat-card .value.yellow{color:var(--yellow);}
+  .stat-card .value.red{color:var(--red);}
+
+  @media (max-width:760px){
+    .summary-grid{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* ===== RADAR + DETAIL ===== */
+  .radar-wrap{
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:var(--radius);padding:24px;margin-bottom:40px;
+  }
+  .radar-canvas-holder{position:relative;width:100%;height:440px;}
+
+  .axis-tabs{
+    display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;
+  }
+  .axis-tab{
+    background:var(--bg-card);border:1px solid var(--border);
+    color:var(--text-dim);font-size:12px;font-family:var(--sans);
+    padding:7px 14px;border-radius:20px;cursor:pointer;
+    transition:all 0.15s;
+  }
+  .axis-tab.active{border-color:var(--gold);color:var(--gold);}
+  .axis-tab .score{font-weight:600;margin-left:4px;}
+
+  .axis-detail{
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:var(--radius);padding:24px;margin-bottom:56px;
+  }
+  .axis-detail-head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    margin-bottom:18px;flex-wrap:wrap;gap:8px;
+  }
+  .axis-detail-head h3{font-family:var(--serif);font-weight:500;font-size:20px;}
+  .axis-detail-head h3 .num{color:var(--gold);font-style:italic;}
+  .axis-detail-head .axscore{font-size:16px;font-weight:600;}
+  .q-row{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:10px 12px;border-radius:8px;
+    background:var(--bg-elev);font-size:13px;margin-bottom:6px;
+  }
+  .q-row .dot{
+    width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:4px;
+  }
+  .q-row .dot.green{background:var(--green);}
+  .q-row .dot.yellow{background:var(--yellow);}
+  .q-row .dot.red{background:var(--red);}
+  .q-row .qid{
+    font-family:monospace;font-size:11px;color:var(--text-faint);
+    margin-right:8px;
+  }
+  .q-row .qtext{color:var(--text-dim);}
+
+  /* ===== ACTION PLAN ===== */
+  .plan-controls{
+    display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;
+  }
+  .plan-controls select{
+    background:var(--bg-card);border:1px solid var(--border);
+    color:var(--text);font-size:13px;font-family:var(--sans);
+    padding:9px 14px;border-radius:8px;outline:none;cursor:pointer;
+  }
+  .progress-row{margin-bottom:24px;}
+  .progress-row .pl{
+    display:flex;justify-content:space-between;font-size:12px;
+    color:var(--text-faint);margin-bottom:6px;
+  }
+  .progress-track{height:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .progress-fill{height:100%;width:0%;background:var(--green);transition:width 0.3s;}
+
+  .action-list{display:flex;flex-direction:column;gap:10px;margin-bottom:56px;}
+  .action-card{
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:var(--radius);padding:16px 18px;
+  }
+  .action-card.done{opacity:0.5;}
+  .action-top{
+    display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;
+  }
+  .action-left{display:flex;gap:10px;align-items:flex-start;}
+  .action-left input[type=checkbox]{margin-top:4px;width:16px;height:16px;accent-color:var(--gold);cursor:pointer;}
+  .action-title{font-size:14px;font-weight:500;margin-bottom:2px;}
+  .action-title.strike{text-decoration:line-through;}
+  .action-meta{font-size:11px;color:var(--text-faint);font-family:monospace;}
+  .badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
+  .badge{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:500;white-space:nowrap;}
+  .badge.high{background:rgba(224,99,94,0.15);color:var(--red);}
+  .badge.medium{background:rgba(245,200,66,0.15);color:var(--yellow);}
+  .badge.low{background:var(--bg-elev);color:var(--text-faint);}
+  .badge.missing{background:rgba(224,99,94,0.15);color:var(--red);}
+  .badge.weak{background:rgba(245,200,66,0.15);color:var(--yellow);}
+  .action-body p{font-size:13px;color:var(--text-dim);margin-bottom:4px;}
+  .action-body b{color:var(--text);font-weight:500;}
+  .action-stats{display:flex;gap:16px;margin-top:8px;font-size:11px;color:var(--text-faint);}
+
+  /* ===== SHARE ===== */
+  .share-box{
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:var(--radius);padding:32px;margin-bottom:56px;
+    text-align:center;
+  }
+  .share-box h2{font-family:var(--serif);font-weight:500;font-size:24px;margin-bottom:10px;}
+  .share-box h2 em{font-style:italic;color:var(--gold);}
+  .share-box p{color:var(--text-dim);font-size:14px;max-width:520px;margin:0 auto 24px;}
+  .share-form{
+    max-width:420px;margin:0 auto 20px;display:flex;flex-direction:column;gap:12px;
+  }
+  .share-form label{
+    text-align:left;font-size:12px;color:var(--text-faint);
+    text-transform:uppercase;letter-spacing:0.06em;margin-bottom:-6px;
+  }
+  .share-form input{
+    background:var(--bg-elev);border:1px solid var(--border);
+    border-radius:8px;padding:12px 14px;color:var(--text);
+    font-family:var(--sans);font-size:14px;outline:none;
+  }
+  .share-form input:focus{border-color:var(--gold);}
+  .share-actions{
+    display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;
+  }
+  .share-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    border:1px solid var(--border);border-radius:8px;
+    padding:12px 22px;font-size:14px;font-weight:500;
+    font-family:var(--sans);cursor:pointer;color:var(--text);
+    background:var(--bg-elev);transition:all 0.2s;
+  }
+  .share-btn.email{border-color:var(--gold);color:var(--gold);}
+  .share-btn.email:hover{background:var(--gold);color:#0a0c0f;}
+  .share-btn.whatsapp{border-color:var(--green);color:var(--green);}
+  .share-btn.whatsapp:hover{background:var(--green);color:#0a0c0f;}
+  .share-note{font-size:12px;color:var(--text-faint);margin-top:14px;}
+
+  /* ===== POSITIONING GRID ===== */
+  .pos-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:64px;
+  }
+  .pos-card{
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:var(--radius);padding:18px 20px;
+  }
+  .pos-card .icon{color:var(--gold);font-size:18px;margin-bottom:8px;}
+  .pos-card h4{font-size:14px;font-weight:500;margin-bottom:6px;}
+  .pos-card p{font-size:12px;color:var(--text-dim);}
+  @media (max-width:760px){.pos-grid{grid-template-columns:repeat(2,1fr);}}
+
+  /* ===== FOOTER ===== */
+  footer{
+    border-top:1px solid var(--border);
+    padding:32px 24px;text-align:center;
+    font-size:12px;color:var(--text-faint);
+  }
+  footer a{color:var(--text-faint);}
+  footer a:hover{color:var(--gold);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <div>
+        <div class="brand-mark">5thelement<span>.ai</span></div>
+        <div class="brand-sub">AI LENS™ — business information layer</div>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="#scan">Scan</a>
+      <a href="#radar">Radar</a>
+      <a href="#plan">Action plan</a>
+      <a href="#share">Send report</a>
+      <a href="#scan" class="nav-cta">Run AI LENS</a>
+    </nav>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#scan">Scan</a>
+    <a href="#radar">Radar</a>
+    <a href="#plan">Action plan</a>
+    <a href="#share">Send report</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="eyebrow">Business information layer <span class="sep">&middot;</span> AI Eyes&trade; <span class="sep">&middot;</span> no fake scores</div>
+  <h1>What AI can see about your business,<br><em>and what it can't.</em></h1>
+  <p class="hero-sub">AI LENS&trade; scans your public business information across 15 levels and 225 questions — the same questions AI assistants must answer before they can find, understand, verify, trust, recommend, and select you.</p>
+
+  <div class="scan-box" id="scan">
+    <input type="text" id="urlInput" placeholder="yoursite.com" value="https://5thelement.ai">
+    <button id="scanBtn">Run AI LENS scan</button>
+  </div>
+  <div class="status-line" id="statusLine">Enter a URL and run the scan. Demo mode simulates AI Eyes&trade; scoring per axis.</div>
+</div>
+
+<section>
+  <div class="summary-grid">
+    <div class="stat-card">
+      <div class="label">Recommendation readiness</div>
+      <div class="value" id="overallScore">--</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Green — clear</div>
+      <div class="value green" id="greenCount">--</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Yellow — weak</div>
+      <div class="value yellow" id="yellowCount">--</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Red — missing</div>
+      <div class="value red" id="redCount">--</div>
+    </div>
+  </div>
+</section>
+
+<section id="radar">
+  <div class="section-head">
+    <h2>L01–L15 <em>radar</em></h2>
+    <p>Each axis scores 0–100 based on how many of its 15 questions AI can answer clearly. Click an axis below to see the full question-by-question breakdown.</p>
+  </div>
+  <div class="radar-wrap">
+    <div class="radar-canvas-holder">
+      <canvas id="radarChart" role="img" aria-label="Radar chart showing AI LENS scores from L01 Findable to L15 Defining"></canvas>
+    </div>
+  </div>
+
+  <div class="axis-tabs" id="axisTabs"></div>
+  <div class="axis-detail" id="axisDetail"></div>
+</section>
+
+<section id="plan">
+  <div class="section-head">
+    <h2>Improvement <em>plan</em></h2>
+    <p>Every red or yellow result becomes an action: what is missing, why AI needs it, what to add, and how much it moves the score.</p>
+  </div>
+
+  <div class="summary-grid">
+    <div class="stat-card">
+      <div class="label">Current score</div>
+      <div class="value" id="currentScore">--</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Projected after fixes</div>
+      <div class="value green" id="projectedScore">--</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Open actions</div>
+      <div class="value" id="totalActions">--</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Completed</div>
+      <div class="value" id="doneActions">--</div>
+    </div>
+  </div>
+
+  <div class="progress-row">
+    <div class="pl"><span>Plan progress</span><span id="progressPct">0%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+  </div>
+
+  <div class="plan-controls">
+    <select id="levelFilter"><option value="all">All levels</option></select>
+    <select id="priorityFilter">
+      <option value="all">All priorities</option>
+      <option value="high">High priority</option>
+      <option value="medium">Medium priority</option>
+      <option value="low">Low priority</option>
+    </select>
+    <select id="statusFilter">
+      <option value="all">All statuses</option>
+      <option value="open">Open only</option>
+      <option value="done">Completed only</option>
+    </select>
+  </div>
+
+  <div class="action-list" id="actionList"></div>
+</section>
+
+<section id="share">
+  <div class="share-box">
+    <h2>Send the <em>report</em></h2>
+    <p>Send the AI LENS score, radar breakdown and improvement plan to yourself or your team — by email or WhatsApp.</p>
+
+    <div class="share-form">
+      <div>
+        <label for="recipientEmail">Email address</label>
+        <input type="email" id="recipientEmail" placeholder="you@company.com">
+      </div>
+      <div>
+        <label for="recipientPhone">WhatsApp number (with country code)</label>
+        <input type="tel" id="recipientPhone" placeholder="+40 7XX XXX XXX">
+      </div>
+    </div>
+
+    <div class="share-actions">
+      <button class="share-btn email" id="emailBtn">Send report by email</button>
+      <button class="share-btn whatsapp" id="whatsappBtn">Send report via WhatsApp</button>
+    </div>
+    <p class="share-note">Email opens your default mail client with the report pre-filled. WhatsApp opens a chat with the summary and action plan ready to send.</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>AI LENS&trade; <em>positioning</em></h2>
+    <p>AI LENS&trade; does not start with the website. It starts with the business information layer — the same questions AI assistants, AI search engines, and recommendation systems must answer before they can confidently surface a company.</p>
+  </div>
+  <div class="pos-grid">
+    <div class="pos-card">
+      <div class="icon">&#9673;</div>
+      <h4>AI Eyes&trade;</h4>
+      <p>Inspects the public business information layer: website, profiles, directories, PDFs and proof pages.</p>
+    </div>
+    <div class="pos-card">
+      <div class="icon">&#9670;</div>
+      <h4>Visibility map</h4>
+      <p>Shows what exists, what is incomplete, what is inconsistent, and what is missing for AI decisions.</p>
+    </div>
+    <div class="pos-card">
+      <div class="icon">&#9650;</div>
+      <h4>15 progressive levels</h4>
+      <p>From L01 Findable&trade; to L15 Defining&trade;, each level builds on the one before it.</p>
+    </div>
+    <div class="pos-card">
+      <div class="icon">&#8594;</div>
+      <h4>Next step</h4>
+      <p>AI LENS&trade; discovers. AI AUDIT&trade; measures the atomic signals. AI READY&trade; fixes what can be fixed automatically.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  AiVenture S.R.L. &middot; 5thelement.ai &middot; AI LENS&trade; AI AUDIT&trade; AI READY&trade; are part of the ADI&trade; framework &middot; <a href="mailto:contact@5thelement.ai">contact@5thelement.ai</a>
+</footer>
+
+<script>
+const AXES = [
+  {id:'L01', name:'Findable', questions:[
+    'Can I discover this business when searching for relevant solutions?','Can I find the homepage?','Can I find the services offered?','Can I find the products offered?','Can I find contact information?','Can I find location information?','Can I find use cases?','Can I find industries served?','Can I find supporting resources?','Can I find proof or evidence pages?','Can I find leadership information?','Can I find legal information?','Can I find FAQ content?','Can I discover the complete offering?','Can AI discover enough information to continue evaluation?'
+  ]},
+  {id:'L02', name:'Accessible', questions:[
+    'Can I access the information needed to evaluate this business?','Can I access the homepage?','Can I access service pages?','Can I access product pages?','Can I access contact information?','Can I access FAQs?','Can I access resources?','Can I access legal pages?','Can I access supporting documents?','Can I access images and media?','Can I access structured data?','Can I access content without barriers?','Can I access content consistently?','Can I access content efficiently?','Can AI access everything required for analysis?'
+  ]},
+  {id:'L03', name:'Readable', questions:[
+    'Can I accurately extract and read the information on this website?','Can I identify the company name?','Can I identify services?','Can I identify products?','Can I identify customer types?','Can I identify industries served?','Can I identify benefits?','Can I identify outcomes?','Can I identify differentiators?','Can I identify contact information?','Can I identify proof statements?','Can I identify calls to action?','Can I identify definitions?','Can I identify relationships between concepts?','Can I accurately reconstruct the business story?'
+  ]},
+  {id:'L04', name:'Parsable', questions:[
+    'Can I transform information into structured facts and relationships?','Can I identify organizations?','Can I identify people?','Can I identify services?','Can I identify products?','Can I identify locations?','Can I identify customer segments?','Can I identify industries?','Can I identify offers?','Can I identify outcomes?','Can I identify evidence?','Can I identify relationships?','Can I identify entity ownership?','Can I build a knowledge graph?','Can I convert content into machine-usable facts?'
+  ]},
+  {id:'L05', name:'Understandable', questions:[
+    'What does this company do?','What problem does it solve?','Who is the customer?','Why does the customer need this?','What services are offered?','What products are offered?','What outcomes are delivered?','What benefits are delivered?','What industries are served?','What geography is served?','What expertise exists?','What methodology exists?','What differentiates the company?','What should buyers remember?','Can I explain this company accurately to a user?'
+  ]},
+  {id:'L06', name:'Classifiable', questions:[
+    'Can I correctly classify this business?','Can I identify the industry category?','Can I identify the business model?','Can I identify the company size?','Can I identify the market segment?','Can I identify the service category?','Can I identify the product category?','Can I identify the pricing tier?','Can I identify the geographic scope?','Can I identify the maturity stage?','Can I identify the target buyer role?','Can I identify the delivery model?','Can I identify the technology stack?','Can I map this business to a taxonomy?','Can AI place this business in the right category set?'
+  ]},
+  {id:'L07', name:'Comparable', questions:[
+    'Can I compare this business to alternatives?','Can I identify direct competitors?','Can I identify substitute offerings?','Can I compare pricing?','Can I compare features?','Can I compare outcomes?','Can I compare service scope?','Can I compare geography served?','Can I compare industries served?','Can I compare company maturity?','Can I compare proof of results?','Can I compare differentiators?','Can I compare delivery speed?','Can I compare support quality?','Can AI build a fair comparison set?'
+  ]},
+  {id:'L08', name:'Verifiable', questions:[
+    'Can I verify the claims made by this business?','Can I verify the company identity?','Can I verify the location?','Can I verify the team or leadership?','Can I verify client relationships?','Can I verify case studies?','Can I verify certifications?','Can I verify metrics or statistics?','Can I verify pricing claims?','Can I verify legal registration?','Can I verify partnerships?','Can I verify technology claims?','Are claims supported by evidence?','Can I cross-check claims with external sources?','Can AI confirm this business is what it says it is?'
+  ]},
+  {id:'L09', name:'Trustable', questions:[
+    'Can I trust the information provided by this business?','Is the information consistent across pages?','Is the information up to date?','Are sources cited where needed?','Are claims proportionate and credible?','Is contact information consistent?','Are legal pages present and complete?','Is ownership transparent?','Are reviews or testimonials present?','Are risks or limitations disclosed appropriately?','Is the tone consistent with the claims?','Are third-party validations present?','Is data privacy addressed?','Is security posture addressed?','Can AI trust this business enough to surface it?'
+  ]},
+  {id:'L10', name:'Recommendable', questions:[
+    'Would AI include this business in a recommendation?','Does the business solve a clear problem?','Is the value proposition specific?','Are outcomes quantified?','Is the target customer clear?','Is there proof relevant to the customer?','Is the offer easy to summarize?','Are next steps clear?','Is pricing transparent enough to recommend?','Are risks manageable for a recommendation?','Is the business currently active?','Is the business reachable?','Does the business stand out from alternatives?','Would a human expert recommend this business?','Would AI confidently mention this business by name?'
+  ]},
+  {id:'L11', name:'Selectable', questions:[
+    'Would AI select this business over alternatives?','Is there a clear reason to choose this business first?','Are unique strengths explicit?','Is urgency or scarcity communicated honestly?','Is the call to action unambiguous?','Is onboarding or next step low friction?','Is pricing competitive for the value shown?','Is risk lower than alternatives?','Is proof stronger than alternatives?','Is support or guarantee offered?','Is availability or capacity clear?','Is the business positioned for this specific use case?','Is the decision easy to justify?','Would AI rank this business first for a relevant query?','Can AI select this business with confidence?'
+  ]},
+  {id:'L12', name:'Preferable', questions:[
+    'Would AI prefer this business across repeated queries?','Is brand consistent across all surfaces?','Is messaging consistent over time?','Is the business mentioned favorably elsewhere?','Are repeat signals of quality present?','Is customer satisfaction evidenced?','Is the business easy to re-find?','Is the offering stable rather than constantly changing?','Are updates communicated clearly?','Is the relationship model clear (one-off vs ongoing)?','Is loyalty or retention evidenced?','Is the business a safe long-term choice?','Are alternatives clearly inferior on key criteria?','Would AI default to this business by habit?','Would AI prefer this business across different contexts?'
+  ]},
+  {id:'L13', name:'Defendable', questions:[
+    'Can AI defend recommending this business if challenged?','Are claims defensible with evidence?','Is the business legally compliant?','Are credentials verifiable?','Is the safety or risk profile acceptable?','Are guarantees or remedies clear?','Is the business transparent about limitations?','Is the business accountable (named owners, entity)?','Are data and privacy practices defensible?','Is pricing fair and disclosed?','Is the business free of major red flags?','Would the recommendation hold up to scrutiny?','Are sources independent of the business itself?','Is there a track record to point to?','Can AI justify this choice to a skeptical user?'
+  ]},
+  {id:'L14', name:'Inevitable', questions:[
+    'Does this business appear as the obvious answer for its category?','Is the business the canonical reference for its niche?','Does the business dominate its specific use case?','Is the business referenced by others in the category?','Is the category itself well defined by this business?','Is the business synonymous with the solution it provides?','Would removing this business leave a visible gap?','Is the business structurally embedded in its ecosystem?','Does the business define the standard others compare to?','Is switching cost to an alternative high?','Is the business present across all relevant AI surfaces?','Is the business the default integration or partner?','Does the business own the narrative for its category?','Would AI struggle to answer without mentioning this business?','Is this business inevitable for its core category?'
+  ]},
+  {id:'L15', name:'Defining', questions:[
+    'Does this business define how AI explains its category?','Does the business set the terminology used in its space?','Are the business\'s frameworks referenced as standards?','Does the business shape how competitors describe themselves?','Is the business the primary source AI draws from for this topic?','Does the business set the evaluation criteria for its category?','Is the business cited as the origin of key concepts?','Does the business own proprietary terms that are widely used?','Would AI use this business\'s language to explain the category itself?','Is the business the reference point for new entrants?','Does the business shape buyer expectations for the category?','Is the business\'s methodology taught or replicated elsewhere?','Does the business influence how the category is measured?','Would removing this business change how AI defines the category?','Is this business defining for its category?'
+  ]}
+];
+
+const ACTIONS = [
+  {level:'L01', name:'Findable', status:'red', title:'Publish a single canonical homepage URL', why:'AI cannot reliably crawl a business if the homepage is split across multiple domains or redirects inconsistently.', fix:'Set one canonical domain, add canonical tags, redirect all variants to it.', impact:4, effort:2},
+  {level:'L01', name:'Findable', status:'red', title:'Add a dedicated leadership and team page', why:'Recommendation engines look for named accountable people behind a business.', fix:'Create a Team page listing founders, roles, and short bios.', impact:3, effort:2},
+  {level:'L01', name:'Findable', status:'yellow', title:'List all industries served on one page', why:'AI needs a single page that enumerates industry coverage to match buyer queries.', fix:'Create or update an Industries page with explicit named sectors.', impact:3, effort:2},
+  {level:'L02', name:'Accessible', status:'red', title:'Remove access barriers on key pages', why:'Pages behind logins, cookie walls, or JS-only rendering are invisible to AI crawlers.', fix:'Serve core service, product and proof pages as static HTML, no login required.', impact:5, effort:3},
+  {level:'L02', name:'Accessible', status:'yellow', title:'Expose structured data (JSON-LD) on every page', why:'Structured data lets AI parse facts without guessing from prose.', fix:'Add Organization, Service, Product and FAQPage JSON-LD to all pages.', impact:4, effort:3},
+  {level:'L03', name:'Readable', status:'yellow', title:'Clarify the company name across pages', why:'Inconsistent naming confuses entity resolution by AI systems.', fix:'Use one consistent legal and brand name everywhere, footer to header.', impact:2, effort:1},
+  {level:'L03', name:'Readable', status:'red', title:'Add explicit differentiator statements', why:'AI cannot infer what makes a business different without it being stated.', fix:'Add a short "why us" section with 3-5 explicit differentiators per page.', impact:4, effort:2},
+  {level:'L04', name:'Parsable', status:'red', title:'Build an entity relationship map (knowledge graph seed)', why:'AI needs explicit relationships between company, products, services and clients.', fix:'Publish entities.json and entity-graph.jsonld describing org, products, people, clients.', impact:5, effort:4},
+  {level:'L04', name:'Parsable', status:'yellow', title:'Tag offers and outcomes separately', why:'AI struggles to separate what is offered from what it produces.', fix:'Use distinct schema fields or sections for offerings vs outcomes.', impact:3, effort:2},
+  {level:'L05', name:'Understandable', status:'yellow', title:'State the core problem solved in one sentence', why:'AI assistants quote a single problem statement when summarizing a business.', fix:'Add a one-sentence problem statement near the top of the homepage.', impact:4, effort:1},
+  {level:'L05', name:'Understandable', status:'red', title:'Define target customer explicitly', why:'Without a stated buyer persona, AI cannot match the business to a query.', fix:'Add an "ideal customer" section naming roles, company size, industries.', impact:4, effort:2},
+  {level:'L06', name:'Classifiable', status:'yellow', title:'Add explicit industry and business model tags', why:'AI classification needs a category, not just narrative description.', fix:'Add schema.org category fields and a clear business model statement (B2B, SaaS, consulting, etc).', impact:3, effort:2},
+  {level:'L07', name:'Comparable', status:'red', title:'Publish a comparison or alternatives page', why:'AI needs a frame of reference to position the business against alternatives.', fix:'Create a page comparing approach vs typical alternatives, without naming competitors unfairly.', impact:3, effort:3},
+  {level:'L08', name:'Verifiable', status:'red', title:'Publish verifiable proof: case studies with named clients', why:'Unverifiable claims are treated as unusable by AI trust layers.', fix:'Add at least one named, permission-granted client case study with measurable outcome.', impact:5, effort:3},
+  {level:'L08', name:'Verifiable', status:'red', title:'Add legal registration details to footer and legal page', why:'AI checks for registered entity identity (registration number, address, jurisdiction).', fix:'Add company registration number, registered address and jurisdiction to footer and a legal page.', impact:3, effort:1},
+  {level:'L08', name:'Verifiable', status:'yellow', title:'Cite sources for any statistics or metrics used', why:'Unsourced numbers are flagged as unverifiable.', fix:'Add inline source links or footnotes for every statistic mentioned.', impact:2, effort:2},
+  {level:'L09', name:'Trustable', status:'yellow', title:'Add a privacy and data handling statement', why:'Trust layers check for disclosed data practices before recommending.', fix:'Publish a clear privacy policy page linked from every page footer.', impact:2, effort:1},
+  {level:'L09', name:'Trustable', status:'red', title:'Add client testimonials or third-party reviews', why:'AI weighs external validation heavily when assessing trust.', fix:'Collect and publish 3-5 short testimonials with names and roles where possible.', impact:4, effort:3},
+  {level:'L10', name:'Recommendable', status:'red', title:'Quantify outcomes for each service', why:'AI recommendation engines prefer measurable outcomes over vague benefit claims.', fix:'Add at least one quantified outcome (time saved, cost reduced, revenue impact) per service.', impact:5, effort:3},
+  {level:'L10', name:'Recommendable', status:'yellow', title:'Clarify pricing transparency', why:'AI hesitates to recommend when pricing is entirely hidden.', fix:'Publish at least indicative pricing ranges or a clear "get a quote" process with expected turnaround.', impact:3, effort:2},
+  {level:'L11', name:'Selectable', status:'yellow', title:'Add a clear single primary call to action', why:'Ambiguous or multiple competing CTAs reduce AI confidence in next steps.', fix:'Pick one primary CTA per page (e.g. "Run free AI LENS scan") and keep secondary CTAs visually subordinate.', impact:3, effort:1},
+  {level:'L11', name:'Selectable', status:'red', title:'State guarantees or risk-reducers explicitly', why:'AI looks for risk-reduction signals (guarantees, free trials, audits) before selection.', fix:'Add an explicit guarantee or no-risk first step (e.g. free AI LENS audit) to the offer.', impact:4, effort:1},
+  {level:'L12', name:'Preferable', status:'yellow', title:'Ensure consistent brand presentation across all satellite sites', why:'Inconsistent branding across domains weakens AI preference for a single entity.', fix:'Align naming, logo, tone and terminology across 5thelement.ai and all satellite domains.', impact:3, effort:3},
+  {level:'L13', name:'Defendable', status:'yellow', title:'Disclose limitations or scope boundaries honestly', why:'AI defends recommendations better when limitations are pre-acknowledged.', fix:'Add a short "what we do not do" or scope clarification section.', impact:2, effort:1},
+  {level:'L14', name:'Inevitable', status:'yellow', title:'Use consistent proprietary terminology across all properties', why:'Repetition of proprietary terms (AI LENS, AI AUDIT, ADI) builds category ownership signals.', fix:'Audit all sites for consistent use and definition of proprietary terms with trademark symbols.', impact:3, effort:2},
+  {level:'L15', name:'Defining', status:'yellow', title:'Publish a glossary defining proprietary framework terms', why:'AI cites definitional sources when explaining a category; owning the glossary builds defining status.', fix:'Create a public glossary page defining AI LENS, AI AUDIT, AI READY, ADI and related terms.', impact:4, effort:2}
+];
+
+let chartInstance = null;
+let scanData = null;
+let activeAxis = 0;
+let currentUrl = '';
+let actionState = ACTIONS.map((a, i) => ({...a, id:i, done:false}));
+const BASE_SCORE = 49;
+
+function seededRandom(seed){ let x = Math.sin(seed) * 10000; return x - Math.floor(x); }
+function hashStr(s){ let h = 0; for (let i=0;i<s.length;i++){ h = (h<<5)-h+s.charCodeAt(i); h|=0; } return Math.abs(h); }
+
+function runScan(url){
+  const baseSeed = hashStr(url || 'default');
+  return AXES.map((axis, ai) => {
+    const decay = ai / AXES.length;
+    let green=0, yellow=0, red=0;
+    const qResults = axis.questions.map((q, qi) => {
+      const r = seededRandom(baseSeed + ai*100 + qi*7.31);
+      const adjusted = r - decay*0.45;
+      let status;
+      if (adjusted > 0.32) status='green';
+      else if (adjusted > 0.0) status='yellow';
+      else status='red';
+      if (status==='green') green++; else if (status==='yellow') yellow++; else red++;
+      return {q, status};
+    });
+    const score = Math.round((green*1 + yellow*0.5) / axis.questions.length * 100);
+    return {id:axis.id, name:axis.name, score, green, yellow, red, qResults};
+  });
+}
+
+function renderChart(){
+  const ctx = document.getElementById('radarChart');
+  const labels = scanData.map(a => a.id + ' ' + a.name);
+  const data = scanData.map(a => a.score);
+  if (chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(ctx, {
+    type: 'radar',
+    data: { labels, datasets: [{
+      label: 'AI LENS score', data,
+      backgroundColor: 'rgba(245,200,66,0.12)',
+      borderColor: '#f5c842',
+      pointBackgroundColor: '#f5c842',
+      pointRadius: 3, borderWidth: 2
+    }]},
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: {
+        r: {
+          min:0, max:100,
+          angleLines:{color:'#23272f'},
+          grid:{color:'#23272f'},
+          pointLabels:{ color:'#9aa0ac', font:{size:10} },
+          ticks:{ display:false, stepSize:25 }
+        }
+      },
+      plugins:{ legend:{ display:false } }
+    }
+  });
+}
+
+function renderTabs(){
+  const wrap = document.getElementById('axisTabs');
+  wrap.innerHTML = '';
+  scanData.forEach((axis, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'axis-tab' + (i===activeAxis ? ' active' : '');
+    btn.innerHTML = axis.id + '<span class="score">' + axis.score + '</span>';
+    btn.addEventListener('click', () => { activeAxis = i; renderTabs(); renderDetail(); });
+    wrap.appendChild(btn);
+  });
+}
+
+function renderDetail(){
+  const axis = scanData[activeAxis];
+  const wrap = document.getElementById('axisDetail');
+  let html = '<div class="axis-detail-head"><h3>' + axis.id + ' &mdash; <span class="num">' + axis.name + '&trade;</span></h3><span class="axscore">' + axis.score + '/100</span></div>';
+  axis.qResults.forEach((item, qi) => {
+    html += '<div class="q-row"><div class="dot ' + item.status + '"></div><div><span class="qid">' + axis.id + '-' + String(qi+1).padStart(2,'0') + '</span><span class="qtext">' + item.q + '</span></div></div>';
+  });
+  wrap.innerHTML = html;
+}
+
+function updateSummary(){
+  const total = AXES.length * 15;
+  let g=0,y=0,r=0,scoreSum=0;
+  scanData.forEach(a => { g+=a.green; y+=a.yellow; r+=a.red; scoreSum+=a.score; });
+  document.getElementById('overallScore').textContent = Math.round(scoreSum/scanData.length) + '/100';
+  document.getElementById('greenCount').textContent = g + ' / ' + total;
+  document.getElementById('yellowCount').textContent = y + ' / ' + total;
+  document.getElementById('redCount').textContent = r + ' / ' + total;
+}
+
+function doScan(){
+  const url = document.getElementById('urlInput').value.trim() || 'https://example.com';
+  currentUrl = url;
+  document.getElementById('statusLine').textContent = 'Scanning ' + url + ' across L01\u2013L15 (225 questions)...';
+  document.getElementById('scanBtn').disabled = true;
+  setTimeout(() => {
+    scanData = runScan(url);
+    activeAxis = 0;
+    renderChart();
+    renderTabs();
+    renderDetail();
+    updateSummary();
+    document.getElementById('statusLine').textContent = 'Scan complete for ' + url + '. Demo scoring \u2014 connect AI Eyes\u2122 crawler for live results.';
+    document.getElementById('scanBtn').disabled = false;
+  }, 500);
+}
+
+document.getElementById('scanBtn').addEventListener('click', doScan);
+document.getElementById('urlInput').addEventListener('keydown', e => { if (e.key==='Enter') doScan(); });
+
+/* ===== ACTION PLAN ===== */
+function levelOrder(l){ return parseInt(l.replace('L',''), 10); }
+
+function populateLevelFilter(){
+  const sel = document.getElementById('levelFilter');
+  const levels = [...new Set(ACTIONS.map(a => a.level + '|' + a.name))]
+    .sort((a,b) => levelOrder(a.split('|')[0]) - levelOrder(b.split('|')[0]));
+  levels.forEach(l => {
+    const [lvl, name] = l.split('|');
+    const opt = document.createElement('option');
+    opt.value = lvl;
+    opt.textContent = lvl + ' \u2014 ' + name;
+    sel.appendChild(opt);
+  });
+}
+
+function priorityFor(impact, effort){
+  const ratio = impact / effort;
+  if (ratio >= 1.8) return 'high';
+  if (ratio >= 1.0) return 'medium';
+  return 'low';
+}
+
+function renderActionList(){
+  const levelF = document.getElementById('levelFilter').value;
+  const prioF = document.getElementById('priorityFilter').value;
+  const statusF = document.getElementById('statusFilter').value;
+  const list = document.getElementById('actionList');
+
+  const filtered = actionState
+    .map(a => ({...a, priority: priorityFor(a.impact, a.effort)}))
+    .filter(a => levelF==='all' || a.level===levelF)
+    .filter(a => prioF==='all' || a.priority===prioF)
+    .filter(a => statusF==='all' || (statusF==='open' ? !a.done : a.done))
+    .sort((a,b) => ({high:0,medium:1,low:2}[a.priority]) - ({high:0,medium:1,low:2}[b.priority]));
+
+  if (filtered.length===0){
+    list.innerHTML = '<p style="font-size:13px;color:var(--text-faint);">No actions match these filters.</p>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(a => {
+    const statusLabel = a.status==='red' ? 'Missing' : 'Weak';
+    const statusClass = a.status==='red' ? 'missing' : 'weak';
+    return `<div class="action-card ${a.done?'done':''}">
+      <div class="action-top">
+        <div class="action-left">
+          <input type="checkbox" data-id="${a.id}" ${a.done?'checked':''}>
+          <div>
+            <div class="action-title ${a.done?'strike':''}">${a.title}</div>
+            <div class="action-meta">${a.level} &middot; ${a.name}</div>
+          </div>
+        </div>
+        <div class="badges">
+          <span class="badge ${a.priority}">${a.priority.charAt(0).toUpperCase()+a.priority.slice(1)} priority</span>
+          <span class="badge ${statusClass}">${statusLabel}</span>
+        </div>
+      </div>
+      <div class="action-body">
+        <p><b>Why AI needs it:</b> ${a.why}</p>
+        <p><b>Action:</b> ${a.fix}</p>
+      </div>
+      <div class="action-stats"><span>Impact ${a.impact}/5</span><span>Effort ${a.effort}/5</span></div>
+    </div>`;
+  }).join('');
+
+  list.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', e => {
+      const id = parseInt(e.target.dataset.id, 10);
+      actionState.find(x => x.id===id).done = e.target.checked;
+      updatePlanSummary();
+      renderActionList();
+    });
+  });
+}
+
+function updatePlanSummary(){
+  const total = actionState.length;
+  const done = actionState.filter(a => a.done).length;
+  const totalImpact = actionState.reduce((s,a) => s+a.impact, 0);
+  const doneImpact = actionState.filter(a=>a.done).reduce((s,a) => s+a.impact, 0);
+  const maxGain = 39;
+  const gain = Math.round(maxGain * (doneImpact/totalImpact));
+
+  document.getElementById('currentScore').textContent = BASE_SCORE + '/100';
+  document.getElementById('projectedScore').textContent = Math.min(100, BASE_SCORE+gain) + '/100';
+  document.getElementById('totalActions').textContent = (total-done);
+  document.getElementById('doneActions').textContent = done;
+  document.getElementById('progressPct').textContent = Math.round(done/total*100) + '%';
+  document.getElementById('progressBar').style.width = Math.round(done/total*100) + '%';
+}
+
+document.getElementById('levelFilter').addEventListener('change', renderActionList);
+document.getElementById('priorityFilter').addEventListener('change', renderActionList);
+document.getElementById('statusFilter').addEventListener('change', renderActionList);
+
+/* ===== MOBILE MENU ===== */
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburgerBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+/* ===== SHARE: EMAIL & WHATSAPP ===== */
+function buildReportText(){
+  const overall = document.getElementById('overallScore').textContent;
+  const green = document.getElementById('greenCount').textContent;
+  const yellow = document.getElementById('yellowCount').textContent;
+  const red = document.getElementById('redCount').textContent;
+  const projected = document.getElementById('projectedScore').textContent;
+
+  let topActions = actionState
+    .filter(a => !a.done)
+    .map(a => ({...a, priority: priorityFor(a.impact, a.effort)}))
+    .sort((a,b) => ({high:0,medium:1,low:2}[a.priority]) - ({high:0,medium:1,low:2}[b.priority]))
+    .slice(0, 5);
+
+  let lines = [];
+  lines.push('AI LENS report \u2014 ' + (currentUrl || 'https://5thelement.ai'));
+  lines.push('');
+  lines.push('Recommendation readiness: ' + overall);
+  lines.push('Green (clear): ' + green);
+  lines.push('Yellow (weak): ' + yellow);
+  lines.push('Red (missing): ' + red);
+  lines.push('Projected score after action plan: ' + projected);
+  lines.push('');
+  lines.push('Top 5 priority actions:');
+  topActions.forEach((a, i) => {
+    lines.push((i+1) + '. [' + a.level + ' ' + a.name + '] ' + a.title + ' \u2014 ' + a.fix);
+  });
+  lines.push('');
+  lines.push('Full radar and action plan: ' + (currentUrl ? 'https://5thelement.ai/ai-lens?target=' + encodeURIComponent(currentUrl) : 'https://5thelement.ai/ai-lens'));
+  return lines.join('\n');
+}
+
+document.getElementById('emailBtn').addEventListener('click', () => {
+  const to = document.getElementById('recipientEmail').value.trim();
+  const subject = 'AI LENS report for ' + (currentUrl || '5thelement.ai');
+  const body = buildReportText();
+  const mailto = 'mailto:' + encodeURIComponent(to) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  window.location.href = mailto;
+});
+
+document.getElementById('whatsappBtn').addEventListener('click', () => {
+  let phone = document.getElementById('recipientPhone').value.trim().replace(/[^0-9]/g, '');
+  const text = buildReportText();
+  const base = phone ? ('https://wa.me/' + phone) : 'https://wa.me/';
+  const url = base + '?text=' + encodeURIComponent(text);
+  window.open(url, '_blank');
+});
+
+/* ===== INIT ===== */
+populateLevelFilter();
+updatePlanSummary();
+renderActionList();
+doScan();
+</script>
+</body>
+</html>
