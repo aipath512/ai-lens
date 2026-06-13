@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI LENS™ — 5thelement.ai | What AI can see about your business</title>
-<meta name="description" content="AI LENS™ scans your public business information across 15 levels and 225 questions — the same questions AI assistants need to answer before they can find, understand, verify, trust, recommend and select you.">
+<title>Free AI LENS™ Scan — 1clic-ia.eu | What AI can see about your business</title>
+<meta name="description" content="Run a free AI LENS™ scan. Enter your website, email or WhatsApp, and discover what AI can see, understand, verify, trust and recommend about your business.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -109,9 +109,25 @@
   }
   h1 em{font-style:italic;color:var(--gold);}
   .hero-sub{
-    max-width:620px;margin:0 auto 40px;
+    max-width:620px;margin:0 auto 24px;
     font-size:16px;color:var(--text-dim);
   }
+
+  .hero-image-wrap{
+    max-width:1040px;
+    margin:26px auto 34px;
+    border:1px solid var(--border);
+    border-radius:18px;
+    overflow:hidden;
+    background:var(--bg-elev);
+    box-shadow:0 24px 80px rgba(0,0,0,0.35);
+  }
+  .hero-image-wrap img{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+
 
   /* ===== SCAN BOX ===== */
   .scan-box{
@@ -148,6 +164,32 @@
     .scan-box input{padding:8px 0;text-align:center;}
     .scan-box button{width:100%;}
   }
+
+  /* ===== LEAD CAPTURE ===== */
+  .lead-fields{
+    max-width:680px;margin:14px auto 10px;
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  }
+  .lead-fields input{
+    background:var(--bg-elev);border:1px solid var(--border);
+    border-radius:10px;padding:13px 14px;color:var(--text);
+    font-family:var(--sans);font-size:14px;outline:none;
+  }
+  .lead-fields input:focus{border-color:var(--gold);}
+  .consent-row{
+    max-width:680px;margin:0 auto 18px;
+    display:flex;gap:10px;align-items:flex-start;
+    color:var(--text-dim);font-size:12px;text-align:left;
+  }
+  .consent-row input{margin-top:3px;accent-color:var(--gold);}
+  .lead-error{
+    max-width:680px;margin:0 auto 10px;
+    color:var(--red);font-size:13px;text-align:center;min-height:18px;
+  }
+  @media (max-width:560px){
+    .lead-fields{grid-template-columns:1fr;}
+  }
+
 
   /* ===== SECTION SHELL ===== */
   section{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
@@ -334,7 +376,7 @@
   <div class="nav">
     <div class="brand">
       <div>
-        <div class="brand-mark">5thelement<span>.ai</span></div>
+        <div class="brand-mark">1clic<span>-ia.eu</span></div>
         <div class="brand-sub">AI LENS™ — business information layer</div>
       </div>
     </div>
@@ -362,11 +404,26 @@
   <h1>What AI can see about your business,<br><em>and what it can't.</em></h1>
   <p class="hero-sub">AI LENS&trade; scans your public business information across 15 levels and 225 questions — the same questions AI assistants must answer before they can find, understand, verify, trust, recommend, and select you.</p>
 
+  <div class="hero-image-wrap">
+    <img src="assets/ai-lens-hero-laptop.png" alt="AI LENS dashboard displayed on a laptop screen with a human blue eye hero visual">
+  </div>
+
   <div class="scan-box" id="scan">
     <input type="text" id="urlInput" placeholder="yoursite.com" value="https://5thelement.ai">
-    <button id="scanBtn">Run AI LENS scan</button>
+    <button id="scanBtn">Run free AI LENS scan</button>
   </div>
-  <div class="status-line" id="statusLine">Enter a URL and run the scan. Demo mode simulates AI Eyes&trade; scoring per axis.</div>
+
+  <div class="lead-fields">
+    <input type="email" id="leadEmail" placeholder="Email address for the report">
+    <input type="tel" id="leadWhatsapp" placeholder="WhatsApp number, e.g. +40737123540">
+  </div>
+  <label class="consent-row">
+    <input type="checkbox" id="leadConsent">
+    <span>I agree to be contacted by AiVenture / 1clic-ia.eu about my free AI LENS™ report and related AI visibility services.</span>
+  </label>
+  <div class="lead-error" id="leadError"></div>
+
+  <div class="status-line" id="statusLine">Enter a website and your email or WhatsApp to receive the report. Demo mode simulates AI Eyes&trade; scoring per axis.</div>
 </div>
 
 <section>
@@ -507,7 +564,7 @@
 </section>
 
 <footer>
-  AiVenture S.R.L. &middot; 5thelement.ai &middot; AI LENS&trade; AI AUDIT&trade; AI READY&trade; are part of the ADI&trade; framework &middot; <a href="mailto:contact@5thelement.ai">contact@5thelement.ai</a>
+  AiVenture S.R.L. &middot; 1clic-ia.eu &middot; AI LENS&trade; AI AUDIT&trade; AI READY&trade; are part of the ADI&trade; framework &middot; <a href="mailto:contact@5thelement.ai">contact@5thelement.ai</a>
 </footer>
 
 <script>
@@ -680,8 +737,78 @@ function updateSummary(){
   document.getElementById('redCount').textContent = r + ' / ' + total;
 }
 
+
+function normalizeUrl(input){
+  let u = (input || '').trim();
+  if (!u) return '';
+  if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  return u;
+}
+
+function getLeadData(){
+  const email = document.getElementById('leadEmail').value.trim();
+  const whatsapp = document.getElementById('leadWhatsapp').value.trim();
+  const consent = document.getElementById('leadConsent').checked;
+  const targetUrl = normalizeUrl(document.getElementById('urlInput').value);
+  return {targetUrl, email, whatsapp, consent};
+}
+
+function validateLead(){
+  const {targetUrl, email, whatsapp, consent} = getLeadData();
+  const err = document.getElementById('leadError');
+  err.textContent = '';
+
+  if (!targetUrl){
+    err.textContent = 'Please enter a website URL.';
+    return false;
+  }
+  if (!email && !whatsapp){
+    err.textContent = 'Please enter at least email or WhatsApp so we can send the report.';
+    return false;
+  }
+  if (!consent){
+    err.textContent = 'Please accept the contact consent to receive the report.';
+    return false;
+  }
+  return true;
+}
+
+async function saveLead(){
+  const {targetUrl, email, whatsapp, consent} = getLeadData();
+
+  const payload = {
+    created_at: new Date().toISOString(),
+    source_site: location.hostname || '1clic-ia.eu',
+    tool: 'AI LENS',
+    scanned_url: targetUrl,
+    email,
+    whatsapp,
+    consent,
+    score: document.getElementById('overallScore').textContent,
+    green: document.getElementById('greenCount').textContent,
+    yellow: document.getElementById('yellowCount').textContent,
+    red: document.getElementById('redCount').textContent,
+    user_agent: navigator.userAgent
+  };
+
+  try {
+    const res = await fetch('/api/lead', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('Lead endpoint error');
+    document.getElementById('statusLine').textContent = 'Scan complete. Lead saved and report is ready.';
+  } catch (e) {
+    console.warn('Lead save failed:', e);
+    document.getElementById('statusLine').textContent = 'Scan complete. Report is ready. Lead endpoint not connected yet.';
+  }
+}
+
 function doScan(){
-  const url = document.getElementById('urlInput').value.trim() || 'https://example.com';
+  if (!validateLead()) return;
+  const url = normalizeUrl(document.getElementById('urlInput').value.trim()) || 'https://example.com';
+  document.getElementById('urlInput').value = url;
   currentUrl = url;
   document.getElementById('statusLine').textContent = 'Scanning ' + url + ' across L01\u2013L15 (225 questions)...';
   document.getElementById('scanBtn').disabled = true;
@@ -692,7 +819,8 @@ function doScan(){
     renderTabs();
     renderDetail();
     updateSummary();
-    document.getElementById('statusLine').textContent = 'Scan complete for ' + url + '. Demo scoring \u2014 connect AI Eyes\u2122 crawler for live results.';
+    document.getElementById('statusLine').textContent = 'Scan complete for ' + url + '. Saving lead and preparing report...';
+    saveLead();
     document.getElementById('scanBtn').disabled = false;
   }, 500);
 }
@@ -854,7 +982,7 @@ document.getElementById('whatsappBtn').addEventListener('click', () => {
 populateLevelFilter();
 updatePlanSummary();
 renderActionList();
-doScan();
+/* Auto-scan disabled for lead magnet mode. User must submit contact first. */
 </script>
 </body>
 </html>
