@@ -1,80 +1,61 @@
-# AI LENS™ Lead Magnet — 1clic-ia.eu
+export async function onRequestPost(context) {
+  try {
+    const data = await context.request.json();
 
-## What this package contains
+    const lead = {
+      id: crypto.randomUUID(),
+      created_at: data.created_at || new Date().toISOString(),
+      source_site: data.source_site || "1clic-ia.eu",
+      tool: data.tool || "AI LENS",
+      scanned_url: data.scanned_url || "",
+      email: data.email || "",
+      whatsapp: data.whatsapp || "",
+      consent: Boolean(data.consent),
+      score: data.score || "",
+      green: data.green || "",
+      yellow: data.yellow || "",
+      red: data.red || "",
+      user_agent: data.user_agent || "",
+      ip_country: context.request.headers.get("cf-ipcountry") || ""
+    };
 
-- `index.html` — independent AI LENS™ lead magnet page
-- `functions/api/lead.js` — Cloudflare Pages Function to capture leads
-- `_headers` — basic security headers
-- `wrangler.toml` — optional Cloudflare project config
+    if (!lead.consent) {
+      return Response.json({ ok: false, error: "Consent is required." }, { status: 400 });
+    }
 
-## How it works
+    if (!lead.email && !lead.whatsapp) {
+      return Response.json({ ok: false, error: "Email or WhatsApp is required." }, { status: 400 });
+    }
 
-1. Visitor enters website URL.
-2. Visitor enters email or WhatsApp.
-3. Visitor accepts consent.
-4. AI LENS™ scan runs.
-5. Results are shown.
-6. Lead is sent to `/api/lead`.
-7. Lead can be stored in Cloudflare KV and/or sent to Airtable, Make, Zapier, Google Sheets, Zoho CRM.
+    if (!lead.scanned_url) {
+      return Response.json({ ok: false, error: "Website URL is required." }, { status: 400 });
+    }
 
-## Cloudflare Pages deployment
+    // Option 1: Cloudflare KV storage.
+    // Create KV namespace named AI_LENS_LEADS and bind it to this Pages project.
+    if (context.env.AI_LENS_LEADS) {
+      await context.env.AI_LENS_LEADS.put(
+        `lead:${lead.created_at}:${lead.id}`,
+        JSON.stringify(lead, null, 2)
+      );
+    }
 
-Upload these files to the root of the `1clic-ia.eu` GitHub repository:
+    // Option 2: Airtable webhook or Make/Zapier webhook.
+    // Add environment variable LEAD_WEBHOOK_URL in Cloudflare Pages settings.
+    if (context.env.LEAD_WEBHOOK_URL) {
+      await fetch(context.env.LEAD_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(lead)
+      });
+    }
 
-```text
-/index.html
-/functions/api/lead.js
-/_headers
-/wrangler.toml
-```
+    return Response.json({ ok: true, lead_id: lead.id });
+  } catch (err) {
+    return Response.json({ ok: false, error: err.message }, { status: 500 });
+  }
+}
 
-Then deploy through Cloudflare Pages.
-
-## Optional KV storage
-
-In Cloudflare Pages:
-
-1. Go to your Pages project.
-2. Settings → Functions → KV namespace bindings.
-3. Add binding name:
-
-```text
-AI_LENS_LEADS
-```
-
-4. Bind it to a KV namespace.
-
-## Optional webhook
-
-In Cloudflare Pages:
-
-1. Settings → Environment variables.
-2. Add:
-
-```text
-LEAD_WEBHOOK_URL
-```
-
-3. Paste Airtable/Make/Zapier/CRM webhook URL.
-
-If no KV or webhook is connected, the page still works visually, but leads are not permanently stored.
-
-## Test
-
-Open:
-
-```text
-https://1clic-ia.eu/
-```
-
-Enter:
-
-- website URL
-- email or WhatsApp
-- consent checkbox
-
-Then click:
-
-```text
-Run free AI LENS scan
-```
+export async function onRequestGet() {
+  return Response.json({ ok: true, endpoint: "AI LENS lead capture is live." });
+}
