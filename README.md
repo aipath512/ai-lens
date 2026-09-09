@@ -1,1 +1,1 @@
-Upload index.html, assets/, functions/ to 1clic-ia.eu root. Resend variables still required for automatic email.
+Upload index.html, assets/, functions/ to ai-lens.eu root. Resend variables still required for automatic email.
