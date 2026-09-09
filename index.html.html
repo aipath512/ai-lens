@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-LENS™ — Dicționarul de business al firmei tale</title>
+<meta name="description" content="AI-LENS construiește dicționarul de business pe care AI îl citește despre firma ta — entități, servicii, oameni, credențiale, dovezi — și arată exact ce lipsește.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --text:#000000;
+    --bg:#ffffff;
+    --bg-raised:#f7f7f5;
+    --line:#dcdcd6;
+    --blue:#0051A8;
+    --accent:#0051A8;
+    --muted:#5a5a54;
+    --serif:'Playfair Display', Georgia, serif;
+    --sans:'Inter', -apple-system, sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  body.dark-mode{
+    --text:#ffffff;
+    --bg:#0a0a0a;
+    --bg-raised:#131311;
+    --line:#2a2a26;
+    --accent:#7ec8ff;
+    --muted:#9a9a92;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    transition:background .25s ease, color .25s ease;
+    line-height:1.6;
+  }
+  body.light-mode *{ color:#0a0a0a !important; }
+
+  a{ color:inherit; }
+
+  /* ---- top controls ---- */
+  #theme-toggle{
+    position:fixed; top:68px; left:24px; z-index:50;
+    width:34px; height:34px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--text); color:var(--bg);
+    border:none; cursor:pointer; font-size:15px;
+  }
+  #lang-select{
+    position:fixed; top:68px; right:24px; z-index:50;
+    background:var(--bg-raised); color:var(--text);
+    border:1px solid var(--line); border-radius:8px;
+    padding:7px 10px; font-family:var(--sans); font-size:13px;
+    cursor:pointer;
+  }
+
+  /* ---- header bar ---- */
+  header.site{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 24px; border-bottom:1px solid var(--line);
+    font-family:var(--mono); font-size:12px; color:var(--muted);
+    flex-wrap:wrap; gap:8px;
+  }
+  header.site .mark{ font-family:var(--serif); font-weight:600; font-size:16px; color:var(--text); }
+  header.site .meta{ display:flex; gap:18px; flex-wrap:wrap; }
+  header.site .meta span{ white-space:nowrap; }
+  .status-dot{ display:inline-block; width:7px; height:7px; border-radius:50%; background:#c9a227; margin-right:5px; }
+
+  /* ---- shell ---- */
+  main{ max-width:760px; margin:0 auto; padding:0 24px; }
+
+  /* ---- hero: dictionary entry ---- */
+  .entry{ padding:96px 0 48px; }
+  .entry .word{
+    font-family:var(--serif); font-weight:700; font-style:italic;
+    font-size:clamp(40px, 7vw, 64px); letter-spacing:-0.01em;
+  }
+  .entry .pron{
+    font-family:var(--mono); font-size:16px; color:var(--muted); margin-top:6px;
+  }
+  .entry .pos{
+    font-family:var(--sans); font-style:italic; font-size:15px; color:var(--muted); margin-top:2px;
+  }
+  .entry .def{
+    margin-top:28px; font-size:19px; max-width:64ch;
+  }
+  .entry .def .n{ font-family:var(--mono); color:var(--blue); margin-right:8px; }
+  body.dark-mode .entry .def .n{ color:var(--accent); }
+
+  hr.rule{ border:none; border-top:1px solid var(--line); margin:56px 0; }
+
+  section h2{
+    font-family:var(--serif); font-weight:600; font-size:26px; margin-bottom:20px;
+    max-width:38ch;
+  }
+  section p{ max-width:66ch; margin-bottom:16px; font-size:16px; color:var(--text); }
+  section p.muted{ color:var(--muted); }
+
+  /* ---- glossary list (what AI-LENS builds) ---- */
+  .glossary{ margin:8px 0 8px; }
+  .glossary dt{
+    font-family:var(--serif); font-weight:600; font-size:19px; margin-top:22px;
+  }
+  .glossary dd{
+    margin-left:0; margin-top:4px; color:var(--muted); font-size:15.5px; max-width:58ch;
+  }
+
+  /* ---- three lenses ---- */
+  .lenses{ margin-top:8px; }
+  .lens{
+    display:grid; grid-template-columns:120px 1fr; gap:20px;
+    padding:20px 0; border-top:1px solid var(--line);
+  }
+  .lens:last-child{ border-bottom:1px solid var(--line); }
+  .lens .name{ font-family:var(--mono); font-size:13px; color:var(--muted); padding-top:3px; }
+  .lens h3{ font-family:var(--serif); font-size:18px; font-weight:600; margin-bottom:6px; }
+  .lens p{ font-size:15px; color:var(--muted); margin-bottom:0; }
+
+  /* ---- status note ---- */
+  .status-box{
+    background:var(--bg-raised); border:1px solid var(--line); border-radius:6px;
+    padding:22px 24px; margin:8px 0 16px;
+  }
+  .status-box p{ margin-bottom:0; font-size:15px; }
+  .status-box .label{
+    font-family:var(--mono); font-size:12px; color:#c9a227; margin-bottom:8px; display:block;
+  }
+
+  /* ---- cta ---- */
+  .cta{ padding:56px 0 80px; }
+  .cta-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:22px; }
+  .btn{
+    display:inline-block; padding:13px 22px; border-radius:6px;
+    font-family:var(--sans); font-weight:500; font-size:15px; text-decoration:none;
+    border:1px solid var(--text);
+  }
+  .btn.primary{ background:var(--text); color:var(--bg); }
+  .btn.ghost{ background:transparent; color:var(--text); }
+
+  footer.site{
+    border-top:1px solid var(--line); margin-top:0; padding:28px 24px 40px;
+  }
+  .footer-inner{ max-width:760px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; font-size:13px; color:var(--muted); }
+  .footer-inner a{ text-decoration:none; }
+  .footer-inner .col{ display:flex; flex-direction:column; gap:6px; }
+
+  @media (max-width:600px){
+    .lens{ grid-template-columns:1fr; gap:4px; }
+    header.site{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body class="dark-mode">
+
+<button id="theme-toggle" aria-label="Comută tema">☀</button>
+<select id="lang-select" aria-label="Limbă">
+  <option value="ro" selected>RO</option>
+  <option value="en">EN</option>
+  <option value="fr">FR</option>
+  <option value="de">DE</option>
+  <!-- restul limbilor UE se adaugă la integrarea i18n reală -->
+</select>
+
+<header class="site">
+  <div class="mark">AI-LENS™</div>
+  <div class="meta">
+    <span><span class="status-dot"></span>în construcție — back office nou</span>
+    <span id="clock"></span>
+    <span>sesiune 0001C</span>
+  </div>
+</header>
+
+<main>
+
+  <section class="entry">
+    <div class="word">AI-LENS</div>
+    <div class="pron">/eɪ.aɪ lɛnz/</div>
+    <div class="pos">substantiv, motor</div>
+    <p class="def">
+      <span class="n">1.</span>Dicționarul de business pe care AI îl citește despre o firmă — cine e organizația, ce servicii oferă, cine sunt oamenii, ce credențiale și dovezi are — construit din tot ce e public despre ea.
+    </p>
+    <p class="def">
+      <span class="n">2.</span>Ceea ce arată clar unde acest dicționar e incomplet.
+    </p>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <h2>Nu e un scor. E un dicționar.</h2>
+    <p>
+      AI-LENS nu produce un număr între 0 și 100. Un scor spune "cât de bine", fără să spună "ce lipsește" sau "de unde știi". AI-LENS construiește, în schimb, intrările reale pe care un sistem AI le-ar folosi ca să înțeleagă și să recomande o firmă — și arată exact unde intrarea e goală.
+    </p>
+    <p class="muted">
+      Verificarea tehnică a semnalelor (ce e prezent, ce lipsește la nivel de site) e un motor separat, <a href="#">3WEBOBS</a>. AI-LENS pornește de acolo și reconstruiește conținutul, nu doar prezența lui.
+    </p>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <h2>Ce conține dicționarul</h2>
+    <dl class="glossary">
+      <dt>Entități</dt>
+      <dd>Firma, filialele, mărcile — cine e, exact, organizația din spatele site-ului.</dd>
+
+      <dt>Servicii</dt>
+      <dd>Ce oferă firma, pentru cine, în ce arie — formulat așa cum ar avea nevoie AI să-l explice mai departe.</dd>
+
+      <dt>Oameni</dt>
+      <dd>Cine reprezintă firma public — roluri, expertiză, atribuire.</dd>
+
+      <dt>Credențiale</dt>
+      <dd>Autorizări, certificări, apartenențe — ce poate fi verificat, nu doar afirmat.</dd>
+
+      <dt>Dovezi</dt>
+      <dd>Sursele care susțin fiecare afirmație de mai sus — fără dovadă, afirmația rămâne neverificată.</dd>
+    </dl>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <h2>Cum se construiește</h2>
+    <p class="muted">Trei treceri, fiecare cu un rol strict — fără amestec între ele.</p>
+    <div class="lenses">
+      <div class="lens">
+        <div class="name">01 — Natural Lens</div>
+        <div>
+          <h3>Ce găsește AI singur</h3>
+          <p>O singură rulare pe domeniu, cu promptul original — ce poate un model AI să reconstruiască despre firmă fără ajutor.</p>
+        </div>
+      </div>
+      <div class="lens">
+        <div class="name">02 — Page Lens</div>
+        <div>
+          <h3>Pagină cu pagină</h3>
+          <p>Același prompt, restrâns la o singură pagină, rulat pe rând pe fiecare URL din sitemap — fără contaminare între pagini.</p>
+        </div>
+      </div>
+      <div class="lens">
+        <div class="name">03 — Business Lens</div>
+        <div>
+          <h3>Reconstrucția finală</h3>
+          <p>Compilarea tuturor observațiilor într-un singur dicționar de business — entități, servicii, oameni, credențiale, dovezi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <h2>Stadiu curent</h2>
+    <div class="status-box">
+      <span class="label">08 SEP 2026</span>
+      <p>Acest domeniu găzduiește versiunea anterioară a produsului, cu scoruri și niveluri care nu mai reflectă definiția actuală. Back office-ul nou — cel descris mai sus — este în construcție. Această pagină descrie unde merge produsul, nu ce rulează încă live aici.</p>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2>Vrei să știi ce vede AI despre firma ta?</h2>
+    <p class="muted">Lăsați-ne un contact — vă anunțăm când primul tur de AI-LENS e disponibil.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="mailto:contact@5thelement.ai">Scrieți-ne</a>
+      <a class="btn ghost" href="#">Vezi 3WEBOBS →</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="footer-inner">
+    <div class="col">
+      <strong style="color:var(--text)">AiVenture S.R.L.</strong>
+      <span>5thelement.ai — AI Discovery Infrastructure</span>
+    </div>
+    <div class="col">
+      <a href="#">3WEBOBS</a>
+      <a href="#">AI-READY INJECTOR</a>
+      <a href="#">EU AI Act Ready</a>
+    </div>
+    <div class="col">
+      <a href="mailto:contact@5thelement.ai">contact@5thelement.ai</a>
+      <a href="#">Politica de confidențialitate (GDPR)</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  toggle.addEventListener('click', () => {
+    const isDark = document.body.classList.toggle('dark-mode');
+    document.body.classList.toggle('light-mode', !isDark);
+    toggle.textContent = isDark ? '☀' : '☾';
+  });
+
+  function tick(){
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      now.toLocaleDateString('ro-RO') + ' ' + now.toLocaleTimeString('ro-RO', {hour:'2-digit', minute:'2-digit'});
+  }
+  tick();
+  setInterval(tick, 30000);
+</script>
+
+</body>
+</html>
