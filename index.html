@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI-LENS™ — Dicționarul de business al firmei tale</title>
-<meta name="description" content="AI-LENS construiește dicționarul de business pe care AI îl citește despre firma ta — entități, servicii, oameni, credențiale, dovezi — și arată exact ce lipsește.">
+<title>AI-LENS™ — Dicționarul de business pe care AI îl citește despre firma ta</title>
+<meta name="description" content="Introduceți adresa site-ului. AI-LENS reconstruiește dicționarul de business — entități, servicii, oameni, credențiale, dovezi — și arată exact ce lipsește.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --text:#000000;
+    --text:#0a0a0a;
     --bg:#ffffff;
-    --bg-raised:#f7f7f5;
-    --line:#dcdcd6;
+    --bg-raised:#f5f5f3;
+    --line:#e2e2dc;
     --blue:#0051A8;
     --accent:#0051A8;
     --muted:#5a5a54;
@@ -28,174 +28,177 @@
     --accent:#7ec8ff;
     --muted:#9a9a92;
   }
+  body.light-mode *{ color:#0a0a0a !important; }
   *{box-sizing:border-box; margin:0; padding:0;}
   body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:var(--sans);
-    transition:background .25s ease, color .25s ease;
-    line-height:1.6;
+    background:var(--bg); color:var(--text); font-family:var(--sans);
+    transition:background .2s, color .2s; line-height:1.6;
   }
-  body.light-mode *{ color:#0a0a0a !important; }
+  a{ color:inherit; text-decoration:none; }
 
-  a{ color:inherit; }
-
-  /* ---- top controls ---- */
   #theme-toggle{
     position:fixed; top:68px; left:24px; z-index:50;
     width:34px; height:34px; border-radius:8px;
     display:flex; align-items:center; justify-content:center;
-    background:var(--text); color:var(--bg);
-    border:none; cursor:pointer; font-size:15px;
+    background:var(--text); color:var(--bg); border:none; cursor:pointer; font-size:15px;
   }
   #lang-select{
     position:fixed; top:68px; right:24px; z-index:50;
     background:var(--bg-raised); color:var(--text);
     border:1px solid var(--line); border-radius:8px;
-    padding:7px 10px; font-family:var(--sans); font-size:13px;
-    cursor:pointer;
+    padding:7px 10px; font-family:var(--sans); font-size:13px; cursor:pointer;
   }
 
-  /* ---- header bar ---- */
   header.site{
     display:flex; justify-content:space-between; align-items:center;
     padding:16px 24px; border-bottom:1px solid var(--line);
     font-family:var(--mono); font-size:12px; color:var(--muted);
     flex-wrap:wrap; gap:8px;
   }
-  header.site .mark{ font-family:var(--serif); font-weight:600; font-size:16px; color:var(--text); }
+  header.site .mark{ font-family:var(--serif); font-weight:700; font-size:18px; color:var(--text); font-style:italic; }
   header.site .meta{ display:flex; gap:18px; flex-wrap:wrap; }
-  header.site .meta span{ white-space:nowrap; }
-  .status-dot{ display:inline-block; width:7px; height:7px; border-radius:50%; background:#c9a227; margin-right:5px; }
 
-  /* ---- shell ---- */
-  main{ max-width:760px; margin:0 auto; padding:0 24px; }
+  main{ max-width:820px; margin:0 auto; padding:0 24px; }
 
-  /* ---- hero: dictionary entry ---- */
-  .entry{ padding:96px 0 48px; }
-  .entry .word{
-    font-family:var(--serif); font-weight:700; font-style:italic;
-    font-size:clamp(40px, 7vw, 64px); letter-spacing:-0.01em;
+  .hero{ padding:72px 0 40px; text-align:center; }
+  .eyebrow{ font-family:var(--mono); font-size:12px; color:var(--muted); margin-bottom:18px; }
+  .hero h1{
+    font-family:var(--serif); font-weight:700; font-size:clamp(32px,5.5vw,50px);
+    line-height:1.15; max-width:16ch; margin:0 auto 20px;
   }
-  .entry .pron{
-    font-family:var(--mono); font-size:16px; color:var(--muted); margin-top:6px;
+  .hero h1 em{ font-style:italic; color:var(--blue); }
+  body.dark-mode .hero h1 em{ color:var(--accent); }
+  .hero p.sub{ font-size:17px; color:var(--muted); max-width:52ch; margin:0 auto; }
+
+  .run-box{
+    margin:40px auto 0; max-width:600px; text-align:left;
+    background:var(--bg-raised); border:1px solid var(--line); border-radius:12px;
+    padding:28px;
   }
-  .entry .pos{
-    font-family:var(--sans); font-style:italic; font-size:15px; color:var(--muted); margin-top:2px;
+  .run-box label{ font-family:var(--mono); font-size:12px; color:var(--muted); display:block; margin-bottom:8px; }
+  .run-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .run-row input[type=text]{
+    flex:1; min-width:200px; padding:14px 16px; border-radius:8px;
+    border:1px solid var(--line); background:var(--bg); color:var(--text);
+    font-family:var(--sans); font-size:15px;
   }
-  .entry .def{
-    margin-top:28px; font-size:19px; max-width:64ch;
+  .run-row button{
+    padding:14px 24px; border-radius:8px; border:none;
+    background:var(--text); color:var(--bg); font-family:var(--sans);
+    font-weight:600; font-size:15px; cursor:pointer;
   }
-  .entry .def .n{ font-family:var(--mono); color:var(--blue); margin-right:8px; }
-  body.dark-mode .entry .def .n{ color:var(--accent); }
+  .run-row button:hover{ opacity:.88; }
+
+  .further{ margin-top:18px; padding-top:18px; border-top:1px solid var(--line); }
+  .further-toggle{ font-size:13px; color:var(--muted); cursor:pointer; display:inline-block; margin-bottom:12px; }
+  .further-fields{ display:none; gap:10px; flex-wrap:wrap; }
+  .further-fields.open{ display:flex; }
+  .further-fields input[type=email]{
+    flex:1; min-width:180px; padding:12px 14px; border-radius:8px;
+    border:1px solid var(--line); background:var(--bg); color:var(--text); font-size:14px;
+  }
+  .consent{ display:flex; align-items:flex-start; gap:8px; margin-top:12px; font-size:13px; color:var(--muted); }
+  .consent input{ margin-top:3px; }
+
+  #form-status{ margin-top:14px; font-size:14px; display:none; }
+  #form-status.ok{ display:block; color:#0a7a3d; }
+  #form-status.err{ display:block; color:#b3261e; }
 
   hr.rule{ border:none; border-top:1px solid var(--line); margin:56px 0; }
 
-  section h2{
-    font-family:var(--serif); font-weight:600; font-size:26px; margin-bottom:20px;
-    max-width:38ch;
-  }
-  section p{ max-width:66ch; margin-bottom:16px; font-size:16px; color:var(--text); }
+  section h2{ font-family:var(--serif); font-weight:600; font-size:26px; margin-bottom:18px; max-width:36ch; }
+  section p{ max-width:66ch; margin-bottom:14px; font-size:16px; }
   section p.muted{ color:var(--muted); }
 
-  /* ---- glossary list (what AI-LENS builds) ---- */
-  .glossary{ margin:8px 0 8px; }
-  .glossary dt{
-    font-family:var(--serif); font-weight:600; font-size:19px; margin-top:22px;
-  }
-  .glossary dd{
-    margin-left:0; margin-top:4px; color:var(--muted); font-size:15.5px; max-width:58ch;
-  }
+  .glossary dt{ font-family:var(--serif); font-weight:600; font-size:18px; margin-top:20px; }
+  .glossary dd{ margin-top:4px; color:var(--muted); font-size:15px; max-width:58ch; }
 
-  /* ---- three lenses ---- */
-  .lenses{ margin-top:8px; }
-  .lens{
-    display:grid; grid-template-columns:120px 1fr; gap:20px;
-    padding:20px 0; border-top:1px solid var(--line);
-  }
+  .lens{ display:grid; grid-template-columns:110px 1fr; gap:18px; padding:18px 0; border-top:1px solid var(--line); }
   .lens:last-child{ border-bottom:1px solid var(--line); }
-  .lens .name{ font-family:var(--mono); font-size:13px; color:var(--muted); padding-top:3px; }
-  .lens h3{ font-family:var(--serif); font-size:18px; font-weight:600; margin-bottom:6px; }
-  .lens p{ font-size:15px; color:var(--muted); margin-bottom:0; }
+  .lens .name{ font-family:var(--mono); font-size:12px; color:var(--muted); padding-top:3px; }
+  .lens h3{ font-family:var(--serif); font-size:17px; font-weight:600; margin-bottom:4px; }
+  .lens p{ font-size:14.5px; color:var(--muted); margin-bottom:0; }
 
-  /* ---- status note ---- */
-  .status-box{
-    background:var(--bg-raised); border:1px solid var(--line); border-radius:6px;
-    padding:22px 24px; margin:8px 0 16px;
-  }
-  .status-box p{ margin-bottom:0; font-size:15px; }
-  .status-box .label{
-    font-family:var(--mono); font-size:12px; color:#c9a227; margin-bottom:8px; display:block;
-  }
+  .status-box{ background:var(--bg-raised); border:1px solid var(--line); border-radius:8px; padding:20px 22px; }
+  .status-box .label{ font-family:var(--mono); font-size:12px; color:#a17a12; margin-bottom:8px; display:block; }
+  .status-box p{ margin-bottom:0; font-size:14.5px; }
 
-  /* ---- cta ---- */
-  .cta{ padding:56px 0 80px; }
-  .cta-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:22px; }
-  .btn{
-    display:inline-block; padding:13px 22px; border-radius:6px;
-    font-family:var(--sans); font-weight:500; font-size:15px; text-decoration:none;
-    border:1px solid var(--text);
-  }
-  .btn.primary{ background:var(--text); color:var(--bg); }
-  .btn.ghost{ background:transparent; color:var(--text); }
+  .stats{ display:flex; gap:40px; justify-content:center; padding:44px 0; flex-wrap:wrap; }
+  .stat{ text-align:center; }
+  .stat .num{ font-family:var(--serif); font-weight:700; font-size:32px; }
+  .stat .label{ font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:4px; }
 
-  footer.site{
-    border-top:1px solid var(--line); margin-top:0; padding:28px 24px 40px;
-  }
-  .footer-inner{ max-width:760px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; font-size:13px; color:var(--muted); }
-  .footer-inner a{ text-decoration:none; }
+  footer.site{ border-top:1px solid var(--line); padding:32px 24px 44px; }
+  .footer-inner{ max-width:820px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; font-size:13px; color:var(--muted); }
   .footer-inner .col{ display:flex; flex-direction:column; gap:6px; }
+  .footer-inner a:hover{ color:var(--text); }
 
   @media (max-width:600px){
     .lens{ grid-template-columns:1fr; gap:4px; }
     header.site{ flex-direction:column; align-items:flex-start; }
+    .stats{ gap:24px; }
   }
 </style>
 </head>
-<body class="dark-mode">
+<body>
 
-<button id="theme-toggle" aria-label="Comută tema">☀</button>
+<button id="theme-toggle" aria-label="Comută tema">☾</button>
 <select id="lang-select" aria-label="Limbă">
   <option value="ro" selected>RO</option>
   <option value="en">EN</option>
   <option value="fr">FR</option>
   <option value="de">DE</option>
-  <!-- restul limbilor UE se adaugă la integrarea i18n reală -->
 </select>
 
 <header class="site">
   <div class="mark">AI-LENS™</div>
   <div class="meta">
-    <span><span class="status-dot"></span>în construcție — back office nou</span>
+    <span>V 1.0 · 0001C</span>
     <span id="clock"></span>
-    <span>sesiune 0001C</span>
   </div>
 </header>
 
 <main>
 
-  <section class="entry">
-    <div class="word">AI-LENS</div>
-    <div class="pron">/eɪ.aɪ lɛnz/</div>
-    <div class="pos">substantiv, motor</div>
-    <p class="def">
-      <span class="n">1.</span>Dicționarul de business pe care AI îl citește despre o firmă — cine e organizația, ce servicii oferă, cine sunt oamenii, ce credențiale și dovezi are — construit din tot ce e public despre ea.
-    </p>
-    <p class="def">
-      <span class="n">2.</span>Ceea ce arată clar unde acest dicționar e incomplet.
-    </p>
+  <section class="hero">
+    <div class="eyebrow">Dicționarul de business pentru AI</div>
+    <h1>Vezi ce știe AI despre <em>firma ta</em></h1>
+    <p class="sub">Introduceți adresa site-ului. AI-LENS reconstruiește entitățile, serviciile, oamenii, credențialele și dovezile pe care AI le poate găsi despre firmă — și arată ce lipsește.</p>
+
+    <form class="run-box" id="lens-form">
+      <label for="scanned_url">Adresa site-ului</label>
+      <div class="run-row">
+        <input type="text" id="scanned_url" name="scanned_url" placeholder="ex: firma-mea.ro" required>
+        <button type="submit">Rulează AI-LENS</button>
+      </div>
+
+      <div class="further">
+        <span class="further-toggle" id="further-toggle">sau primiți rezultatul pe email ▾</span>
+        <div class="further-fields" id="further-fields">
+          <input type="email" id="email" name="email" placeholder="email@firma.ro">
+        </div>
+        <label class="consent">
+          <input type="checkbox" id="consent" name="consent" required>
+          <span>Sunt de acord să fiu contactat cu privire la rezultatul acestei verificări.</span>
+        </label>
+      </div>
+
+      <div id="form-status"></div>
+    </form>
   </section>
+
+  <div class="stats">
+    <div class="stat"><div class="num" id="stat-views">0</div><div class="label">VIZUALIZĂRI</div></div>
+    <div class="stat"><div class="num" id="stat-unique">0</div><div class="label">VIZITATORI UNICI</div></div>
+    <div class="stat"><div class="num" id="stat-runs">0</div><div class="label">RULĂRI AI-LENS</div></div>
+  </div>
 
   <hr class="rule">
 
   <section>
     <h2>Nu e un scor. E un dicționar.</h2>
-    <p>
-      AI-LENS nu produce un număr între 0 și 100. Un scor spune "cât de bine", fără să spună "ce lipsește" sau "de unde știi". AI-LENS construiește, în schimb, intrările reale pe care un sistem AI le-ar folosi ca să înțeleagă și să recomande o firmă — și arată exact unde intrarea e goală.
-    </p>
-    <p class="muted">
-      Verificarea tehnică a semnalelor (ce e prezent, ce lipsește la nivel de site) e un motor separat, <a href="#">3WEBOBS</a>. AI-LENS pornește de acolo și reconstruiește conținutul, nu doar prezența lui.
-    </p>
+    <p>AI-LENS nu produce un număr între 0 și 100. Construiește intrările reale pe care un sistem AI le-ar folosi ca să înțeleagă și să recomande o firmă — și arată exact unde intrarea e goală.</p>
+    <p class="muted">Verificarea tehnică a semnalelor (ce e prezent, ce lipsește la nivel de site) e un motor separat, <a href="https://3webobs.com">3WEBOBS</a>. AI-LENS pornește de acolo și reconstruiește conținutul, nu doar prezența lui.</p>
   </section>
 
   <hr class="rule">
@@ -205,18 +208,14 @@
     <dl class="glossary">
       <dt>Entități</dt>
       <dd>Firma, filialele, mărcile — cine e, exact, organizația din spatele site-ului.</dd>
-
       <dt>Servicii</dt>
       <dd>Ce oferă firma, pentru cine, în ce arie — formulat așa cum ar avea nevoie AI să-l explice mai departe.</dd>
-
       <dt>Oameni</dt>
       <dd>Cine reprezintă firma public — roluri, expertiză, atribuire.</dd>
-
       <dt>Credențiale</dt>
       <dd>Autorizări, certificări, apartenențe — ce poate fi verificat, nu doar afirmat.</dd>
-
       <dt>Dovezi</dt>
-      <dd>Sursele care susțin fiecare afirmație de mai sus — fără dovadă, afirmația rămâne neverificată.</dd>
+      <dd>Sursele care susțin fiecare afirmație de mai sus.</dd>
     </dl>
   </section>
 
@@ -224,28 +223,19 @@
 
   <section>
     <h2>Cum se construiește</h2>
-    <p class="muted">Trei treceri, fiecare cu un rol strict — fără amestec între ele.</p>
+    <p class="muted">Trei treceri, fiecare cu un rol strict.</p>
     <div class="lenses">
       <div class="lens">
         <div class="name">01 — Natural Lens</div>
-        <div>
-          <h3>Ce găsește AI singur</h3>
-          <p>O singură rulare pe domeniu, cu promptul original — ce poate un model AI să reconstruiască despre firmă fără ajutor.</p>
-        </div>
+        <div><h3>Ce găsește AI singur</h3><p>O singură rulare pe domeniu — ce poate un model AI să reconstruiască fără ajutor.</p></div>
       </div>
       <div class="lens">
         <div class="name">02 — Page Lens</div>
-        <div>
-          <h3>Pagină cu pagină</h3>
-          <p>Același prompt, restrâns la o singură pagină, rulat pe rând pe fiecare URL din sitemap — fără contaminare între pagini.</p>
-        </div>
+        <div><h3>Pagină cu pagină</h3><p>Același prompt, restrâns la o pagină, rulat pe fiecare URL din sitemap.</p></div>
       </div>
       <div class="lens">
         <div class="name">03 — Business Lens</div>
-        <div>
-          <h3>Reconstrucția finală</h3>
-          <p>Compilarea tuturor observațiilor într-un singur dicționar de business — entități, servicii, oameni, credențiale, dovezi.</p>
-        </div>
+        <div><h3>Reconstrucția finală</h3><p>Compilarea tuturor observațiilor într-un singur dicționar de business.</p></div>
       </div>
     </div>
   </section>
@@ -255,17 +245,8 @@
   <section>
     <h2>Stadiu curent</h2>
     <div class="status-box">
-      <span class="label">08 SEP 2026</span>
-      <p>Acest domeniu găzduiește versiunea anterioară a produsului, cu scoruri și niveluri care nu mai reflectă definiția actuală. Back office-ul nou — cel descris mai sus — este în construcție. Această pagină descrie unde merge produsul, nu ce rulează încă live aici.</p>
-    </div>
-  </section>
-
-  <section class="cta">
-    <h2>Vrei să știi ce vede AI despre firma ta?</h2>
-    <p class="muted">Lăsați-ne un contact — vă anunțăm când primul tur de AI-LENS e disponibil.</p>
-    <div class="cta-row">
-      <a class="btn primary" href="mailto:contact@5thelement.ai">Scrieți-ne</a>
-      <a class="btn ghost" href="#">Vezi 3WEBOBS →</a>
+      <span class="label">09 SEP 2026</span>
+      <p>Motorul de rulare completă e în construcție. Formularul de mai sus înregistrează cererea și adresa de contact — vă anunțăm imediat ce primul tur de AI-LENS e disponibil pentru domeniul introdus.</p>
     </div>
   </section>
 
@@ -274,16 +255,18 @@
 <footer class="site">
   <div class="footer-inner">
     <div class="col">
-      <strong style="color:var(--text)">AiVenture S.R.L.</strong>
-      <span>5thelement.ai — AI Discovery Infrastructure</span>
+      <strong style="color:var(--text)">AIVENTURE S.R.L.</strong>
+      <span>București, Sectorul 1, România, UE</span>
+      <span>CUI 51415878 · J2025016406000</span>
     </div>
     <div class="col">
-      <a href="#">3WEBOBS</a>
-      <a href="#">AI-READY INJECTOR</a>
-      <a href="#">EU AI Act Ready</a>
+      <a href="https://3webobs.com">3WEBOBS</a>
+      <a href="https://5thelement.ai">5thElement.ai</a>
+      <a href="https://aiventure.ro">AiVenture.ro</a>
     </div>
     <div class="col">
       <a href="mailto:contact@5thelement.ai">contact@5thelement.ai</a>
+      <a href="https://api.whatsapp.com/send/?phone=40737123540">WhatsApp · +40 737 123 540</a>
       <a href="#">Politica de confidențialitate (GDPR)</a>
     </div>
   </div>
@@ -297,13 +280,58 @@
     toggle.textContent = isDark ? '☀' : '☾';
   });
 
+  document.getElementById('further-toggle').addEventListener('click', () => {
+    document.getElementById('further-fields').classList.toggle('open');
+  });
+
   function tick(){
     const now = new Date();
     document.getElementById('clock').textContent =
       now.toLocaleDateString('ro-RO') + ' ' + now.toLocaleTimeString('ro-RO', {hour:'2-digit', minute:'2-digit'});
   }
-  tick();
-  setInterval(tick, 30000);
+  tick(); setInterval(tick, 30000);
+
+  const form = document.getElementById('lens-form');
+  const statusEl = document.getElementById('form-status');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    statusEl.className = ''; statusEl.style.display = 'none';
+
+    const scanned_url = document.getElementById('scanned_url').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const consent = document.getElementById('consent').checked;
+
+    if(!consent){
+      statusEl.textContent = 'Bifați acordul înainte de a continua.';
+      statusEl.className = 'err'; statusEl.style.display = 'block';
+      return;
+    }
+
+    try{
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          source_site: 'ai-lens.eu',
+          tool: 'AI LENS',
+          scanned_url, email, consent,
+          user_agent: navigator.userAgent
+        })
+      });
+      const out = await res.json();
+      if(out.ok){
+        statusEl.textContent = 'Înregistrat. Vă contactăm la adresa dvs. imediat ce rularea e disponibilă.';
+        statusEl.className = 'ok'; statusEl.style.display = 'block';
+        form.reset();
+      } else {
+        statusEl.textContent = out.error || 'A apărut o eroare. Încercați din nou.';
+        statusEl.className = 'err'; statusEl.style.display = 'block';
+      }
+    } catch(err){
+      statusEl.textContent = 'Nu s-a putut trimite cererea. Verificați conexiunea și încercați din nou.';
+      statusEl.className = 'err'; statusEl.style.display = 'block';
+    }
+  });
 </script>
 
 </body>
