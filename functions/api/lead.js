@@ -5,7 +5,7 @@ export async function onRequestPost(context) {
     const lead = {
       id: crypto.randomUUID(),
       created_at: data.created_at || new Date().toISOString(),
-      source_site: data.source_site || "1clic-ia.eu",
+      source_site: data.source_site || "ai-lens.eu",
       tool: data.tool || "AI LENS",
       scanned_url: data.scanned_url || "",
       email: data.email || "",
