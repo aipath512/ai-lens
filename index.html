@@ -977,25 +977,44 @@ grid-template-columns:repeat(4,1fr);gap:18px 26px;}
     <button class="url-go" id="go-btn" onclick="startAudit()">Run Audit</button>
   </div>
 
-  <!-- AI-LENS P0–P7 EXECUTION CHAIN -->
+  <!-- AI-LENS PAGE-BY-PAGE WALK — 4 AI, one page at a time -->
   <section class="lens-job" id="lens-job" aria-live="polite">
     <div class="lens-job-head">
-      <div class="lens-job-title">JOB AILENS0002H · P0→P7 · FAIL-SAFE</div>
-      <div class="lens-job-meta" id="lens-job-meta">READY · RC=---- · 0/8</div>
+      <div class="lens-job-title">AI-LENS · PAGE-BY-PAGE WALK · 4 AI</div>
+      <div class="lens-job-meta" id="lens-job-meta">READY</div>
     </div>
-    <div class="lens-rail" id="lens-rail">
-      <div class="lens-st active" data-lens-stage="D"><div class="lens-dot"></div><b>DEPARTURE</b><span>URL</span></div>
-      <div class="lens-st" data-lens-stage="P0"><div class="lens-dot"></div><b>P0</b><span>EXISTS</span></div>
-      <div class="lens-st" data-lens-stage="P1"><div class="lens-dot"></div><b>P1</b><span>PAGE</span></div>
-      <div class="lens-st" data-lens-stage="P2"><div class="lens-dot"></div><b>P2</b><span>DOMAIN</span></div>
-      <div class="lens-st" data-lens-stage="P3"><div class="lens-dot"></div><b>P3</b><span>FIND</span></div>
-      <div class="lens-st" data-lens-stage="P4"><div class="lens-dot"></div><b>P4</b><span>SURVIVE</span></div>
-      <div class="lens-st" data-lens-stage="P5"><div class="lens-dot"></div><b>P5</b><span>GAPS</span></div>
-      <div class="lens-st" data-lens-stage="P6"><div class="lens-dot"></div><b>P6</b><span>VIEWS</span></div>
-      <div class="lens-st" data-lens-stage="P7"><div class="lens-dot"></div><b>P7</b><span>MERGE</span></div>
-    </div>
+    <div id="lens-pages-strip" style="padding:10px 13px;border-bottom:1px solid var(--border);font:10.5px/1.5 'SF Mono',ui-monospace,Menlo,monospace;color:var(--light);display:none"></div>
     <div class="lens-programs" id="lens-programs"></div>
-    <div class="lens-note">P0–P3 observe. P4 measures information survival. P5 classifies gaps. P6 normalizes one view per AI. P7 merges frozen views. Technical cause and remediation are not invented here; they are handed to 3WEBOBS.</div>
+    <div class="lens-display" id="lens-synthesis" style="display:none;padding:14px;border-top:1px solid var(--border);background:var(--bg2)"></div>
+    <div class="lens-note">ChatGPT parcurge complet toate paginile — homepage, apoi sitemap, una câte una — apoi Claude, apoi Gemini, apoi Perplexity, pe rând. La fiecare pagină se arată starea completă a celor 9 categorii de informație business (nu doar ce e nou). La final: un tabel comparativ pe cele 4 AI și măsuri concrete de ameliorare — nu un scor.</div>
+  </section>
+
+  <!-- AI-LENS MARKET VIEW (P8) — starts from client intent, not from the site -->
+  <section class="lens-job" id="market-job" aria-live="polite" style="margin-top:22px">
+    <div class="lens-job-head">
+      <div class="lens-job-title">AI-LENS · MARKET VIEW · 4 AI</div>
+      <div class="lens-job-meta" id="market-job-meta">READY</div>
+    </div>
+    <div style="padding:14px;border-bottom:1px solid var(--border);display:grid;gap:10px">
+      <div>
+        <label for="market-intent-input" style="display:block;font-size:11px;font-weight:600;color:var(--light);margin-bottom:4px">Ce caută clientul tău ideal? (nu site-ul tău — nevoia lui, în cuvintele lui)</label>
+        <textarea id="market-intent-input" rows="2" placeholder="ex: Accounting and fractional CFO services for a Romanian SME with EU operations" style="width:100%;padding:9px 11px;border:1px solid var(--border-md);border-radius:8px;background:var(--bg);color:var(--text);font:13px/1.4 -apple-system,sans-serif;resize:vertical"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end">
+        <div>
+          <label for="market-name-input" style="display:block;font-size:11px;font-weight:600;color:var(--light);margin-bottom:4px">Numele firmei tale (cum ar trebui să te recunoască AI)</label>
+          <input type="text" id="market-name-input" placeholder="ex: ECBTAX" style="width:100%;padding:9px 11px;border:1px solid var(--border-md);border-radius:8px;background:var(--bg);color:var(--text);font-size:13px">
+        </div>
+        <div>
+          <label for="market-url-input" style="display:block;font-size:11px;font-weight:600;color:var(--light);margin-bottom:4px">Site-ul tău (opțional)</label>
+          <input type="text" id="market-url-input" placeholder="ex: ecbtax.com" style="width:100%;padding:9px 11px;border:1px solid var(--border-md);border-radius:8px;background:var(--bg);color:var(--text);font-size:13px">
+        </div>
+        <button class="url-go" style="position:static;transform:none;padding:10px 20px" onclick="startMarketView()">Run Market View</button>
+      </div>
+    </div>
+    <div class="lens-programs" id="market-programs"></div>
+    <div class="lens-display" id="market-synthesis" style="display:none;padding:14px;border-top:1px solid var(--border);background:var(--bg2)"></div>
+    <div class="lens-note">Fiecare din cei 4 AI e întrebat — secvențial, ca la Site View — ce ar recomanda pentru nevoia de mai sus, folosind căutare reală pe web, nu textul site-ului tău. Notăm dacă firma ta apare, pe ce poziție, alături de cine, și — dacă apare — cerem o comparație directă cu alternativele numite. Nu garantează ce va răspunde un AI real fiecărui utilizator — e un eșantion, nu o certitudine.</div>
   </section>
 
   <!-- DIVIDER -->
@@ -1048,6 +1067,10 @@ grid-template-columns:repeat(4,1fr);gap:18px 26px;}
           <label><input type="checkbox" id="want-report" checked> The report</label>
           <label><input type="checkbox" id="want-plan"> The action plan</label>
         </div>
+        <label class="cta-mail-consent" style="display:flex;gap:6px;align-items:flex-start;font-size:11px;opacity:.7;margin-top:6px;">
+          <input type="checkbox" id="lead-consent" style="margin-top:2px;">
+          <span>I agree to be emailed this report at the address above. No marketing — unsubscribe any time.</span>
+        </label>
         <p class="cta-share-note" id="lead-note">We send it to that address. The audited site is saved with it, so we know which report you mean.</p>
       </div>
     </div>
@@ -1390,8 +1413,8 @@ async function unlockChecklist(){
   const btn = document.getElementById('checklist-btn');
   btn.disabled = true; btn.textContent = 'Unlocking…';
   try{
-    await fetch('/lead', { method:'POST', headers:{'content-type':'application/json'},
-      body: JSON.stringify({ email, url: 'ai-readiness-checklist' }) });
+    await fetch('/api/lead', { method:'POST', headers:{'content-type':'application/json'},
+      body: JSON.stringify({ email, scanned_url: 'https://ai-lens.eu/#checklist', consent: true, tool: 'AI LENS checklist', source_site: 'ai-lens.eu' }) });
   }catch(e){ /* still unlock — the download itself doesn't depend on the lead being stored */ }
   document.getElementById('checklist-form-row').style.display = 'none';
   msg.style.color = 'var(--green)';
@@ -1673,7 +1696,7 @@ let SESSION_NOW = null;
 
 async function initSessions(){
   try {
-    var r = await fetch('/session');
+    var r = await fetch('/api/session');
     if(!r.ok) return;
     var j = await r.json();
     SESSION_NOW = j.current;
@@ -1685,6 +1708,23 @@ async function initSessions(){
     describeSession(j.current);
     input.addEventListener('input', function(){ describeSession(input.value); });
     bar.hidden = false;
+  } catch(e){}
+}
+
+function recordSessionObservation(d){
+  // Fire-and-forget: never blocks rendering, never surfaces an error to the user.
+  // If AI_LENS_SESSIONS KV isn't bound yet, the endpoint returns 501 and this is a no-op.
+  try {
+    fetch('/api/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session: SESSION_NOW || undefined,
+        url: d.url,
+        global: (typeof d.global === 'number') ? d.global : null,
+        scores: d.scores || {}
+      })
+    }).catch(function(){});
   } catch(e){}
 }
 
@@ -1714,7 +1754,7 @@ async function compareSessions(){
 
   var target = (REPORT_V2 && REPORT_V2.url) ? '&url=' + encodeURIComponent(REPORT_V2.url) : '';
   try {
-    var r = await fetch('/session/compare?a=' + encodeURIComponent(chosen)
+    var r = await fetch('/api/session/compare?a=' + encodeURIComponent(chosen)
       + '&b=' + encodeURIComponent(SESSION_NOW || chosen) + target);
     var j = await r.json();
     if(j.error){ out.textContent = j.error; return; }
@@ -1793,11 +1833,30 @@ function toggleShare(event){
   panel.hidden = false;
 }
 
+function buildReportText(d){
+  var lines = [];
+  lines.push('AI LENS report for ' + (d.url || 'your website'));
+  lines.push('Generated ' + new Date().toISOString());
+  lines.push('');
+  lines.push('Overall AI visibility: ' + (d.global != null ? d.global : 'n/a') + ' / 100');
+  lines.push('');
+  var labels = {AEO:'Answer Engine Optimization',GEO:'Generative Engine Optimization',AIO:'AI Optimization',SEO:'Search Engine Optimization',AI_SIGNALS:'AI Signals (machine trust)',A2A:'Agent-to-Agent Signals'};
+  Object.keys(d.scores || {}).forEach(function(k){
+    var v = d.scores[k];
+    if(v == null) return;
+    lines.push((labels[k] || k) + ': ' + v + ' / 100');
+  });
+  lines.push('');
+  lines.push('Full interactive report: ' + (typeof location !== 'undefined' ? location.origin : 'https://ai-lens.eu'));
+  return lines.join('\n');
+}
+
 async function submitLead(){
   var input = document.getElementById('lead-email');
   var note  = document.getElementById('lead-note');
   var btn   = document.getElementById('lead-go');
   var email = (input.value || '').trim();
+  var consentBox = document.getElementById('lead-consent');
 
   var wants = [];
   if(document.getElementById('want-report').checked) wants.push('report');
@@ -1812,30 +1871,58 @@ async function submitLead(){
     note.textContent = 'Tick at least one — the report, the plan, or both.';
     return;
   }
+  if(consentBox && !consentBox.checked){
+    note.textContent = 'Please tick the consent box so we know it is okay to email you.';
+    consentBox.focus();
+    return;
+  }
 
   btn.disabled = true;
   var original = btn.textContent;
   btn.textContent = 'Saving…';
 
+  var delivered = false;
+  var errorMsg = null;
+
   try {
-    var r = await fetch('/lead', {
+    var leadRes = await fetch('/api/lead', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         email: email,
-        url: (REPORT_V2 && REPORT_V2.url) || '',
-        observationId: (REPORT_V2 && REPORT_V2.observationId) || null,
-        score: (REPORT_V2 && REPORT_V2.global != null) ? REPORT_V2.global : null,
-        wants: wants,
-        lang: document.documentElement.lang || 'en'
+        scanned_url: (REPORT_V2 && REPORT_V2.url) || (AUD && AUD.url) || '',
+        consent: true,
+        tool: 'AI LENS',
+        source_site: 'ai-lens.eu',
+        score: (AUD && AUD.global != null) ? AUD.global : ((REPORT_V2 && REPORT_V2.global != null) ? REPORT_V2.global : ''),
+        user_agent: navigator.userAgent
       })
     });
-    var j = await r.json();
-    if(!r.ok){ note.textContent = j.error || 'That could not be saved. Try again in a moment.'; return; }
+    var leadJson = await leadRes.json();
+    if(!leadRes.ok){ errorMsg = leadJson.error || 'That could not be saved. Try again in a moment.'; }
+
+    if(!errorMsg && AUD && AUD.url){
+      try {
+        var sendRes = await fetch('/api/send-report', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            scanned_url: AUD.url,
+            report: buildReportText(AUD)
+          })
+        });
+        var sendJson = await sendRes.json();
+        delivered = Boolean(sendRes.ok && sendJson.ok);
+        if(!delivered && sendJson.error) errorMsg = null; // lead was still saved — fall through to the softer message below
+      } catch(e2){ delivered = false; }
+    }
+
+    if(errorMsg){ note.textContent = errorMsg; return; }
 
     var what = wants.length === 2 ? 'The report and the action plan are'
              : wants[0] === 'report' ? 'The report is' : 'The action plan is';
-    note.innerHTML = j.delivered
+    note.innerHTML = delivered
       ? what + ' on the way to ' + email.replace(/[<>&]/g,'') + '. '
         + 'If it is not there in a minute, check spam &mdash; and the link above works either way.'
       : 'Saved, but the email could not be sent right now. '
@@ -2057,50 +2144,216 @@ let AUD={},zoom='normal',filt='all',sortBy='score';
 function h(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=(h*16777619)>>>0;}return(h%10000)/10000;}
 
 
-const LENS_STAGES=[
-  {id:'P0',pgm:'PGM00BASE',q:'WHAT EXISTS?'},
-  {id:'P1',pgm:'PGM01PAGE',q:'WHAT DOES AI SEE ON THE EXACT PAGE?'},
-  {id:'P2',pgm:'PGM02DOMAIN',q:'WHAT CAN AI RECONSTRUCT ACROSS THE DOMAIN?'},
-  {id:'P3',pgm:'PGM03NAT',q:'WHAT DOES AI FIND NATURALLY?'},
-  {id:'P4',pgm:'PGM04FLOW',q:'WHAT INFORMATION SURVIVED?'},
-  {id:'P5',pgm:'PGM05GAPS',q:'WHERE IS INFORMATION LOST?'},
-  {id:'P6',pgm:'PGM06VIEWS',q:'WHAT VERSION OF THE BUSINESS DOES EACH AI SEE?'},
-  {id:'P7',pgm:'PGM07MERGE',q:'DO THE AI SYSTEMS SEE THE SAME BUSINESS?'}
-];
+const PROVIDERS=['ChatGPT','Claude','Gemini','Perplexity'];
+const FIELD_LABELS={WHO:'Who is this?',OFFER:'What do they sell?',AUDIENCE:'Who is it for?',PROBLEM:'What need does it solve?',VALUE:'What value do they deliver?',WHY_YOU:'Why this company?',EVIDENCE:'What proves it?',COMPETITION:'Compared to whom?',HOW_TO_BUY:'How do you buy?'};
 let lensController=null;
+let lensProgress={};
 function lensEsc(x){return String(x==null?'':x).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
 function initLensJob(){
   const host=document.getElementById('lens-programs'); if(!host)return;
-  host.innerHTML=LENS_STAGES.map((d,i)=>`<div class="lens-pgm" id="lens-pgm-${i}"><div class="lens-pgm-h" onclick="this.parentElement.classList.toggle('open')"><div class="lens-pid">${d.id}</div><div class="lens-pname">${d.pgm}</div><div class="lens-pq">${d.q}</div><div class="lens-state" id="lens-state-${i}">QUEUED</div></div><div class="lens-display"><pre id="lens-log-${i}">WAITING FOR ${d.pgm}...</pre></div></div>`).join('');
-  lensRoute(-1); document.getElementById('lens-job-meta').textContent='READY · RC=---- · 0/8';
+  host.innerHTML=PROVIDERS.map((name,i)=>`<div class="lens-pgm open" id="lens-pgm-${i}"><div class="lens-pgm-h" onclick="this.parentElement.classList.toggle('open')"><div class="lens-pid">${name}</div><div class="lens-pname">page-by-page</div><div class="lens-pq">queued</div><div class="lens-state" id="lens-state-${i}">QUEUED</div></div><div class="lens-display" id="lens-disp-${i}"><div id="lens-log-${i}" data-empty="1" style="font:10.5px/1.55 'SF Mono',ui-monospace,Menlo,monospace">Waiting its turn…</div></div></div>`).join('');
+  const strip=document.getElementById('lens-pages-strip'); if(strip){strip.style.display='none'; strip.innerHTML='';}
+  const synth=document.getElementById('lens-synthesis'); if(synth){synth.style.display='none'; synth.innerHTML='';}
+  lensProgress={}; PROVIDERS.forEach(p=>lensProgress[p]={done:0,total:0});
+  document.getElementById('lens-job-meta').textContent='READY';
 }
-function lensRoute(current){
-  const nodes=[...document.querySelectorAll('.lens-st')];
-  nodes.forEach((n,i)=>{n.classList.remove('done','active'); if(i===0&&current>=0)n.classList.add('done'); if(i>0&&i-1<current)n.classList.add('done'); if(i>0&&i-1===current)n.classList.add('active');});
-  if(current<0&&nodes[0])nodes[0].classList.add('active');
+function providerIndex(name){return PROVIDERS.indexOf(name);}
+function setProviderState(name,status){
+  const i=providerIndex(name); if(i<0)return;
+  const st=document.getElementById('lens-state-'+i); if(!st)return;
+  const cls=String(status||'RUNNING').toLowerCase(); st.textContent=status; st.className='lens-state '+cls;
 }
-function lensSet(i,status,display){
-  const st=document.getElementById('lens-state-'+i),pg=document.getElementById('lens-pgm-'+i),log=document.getElementById('lens-log-'+i); if(!st)return;
-  const cls=String(status||'RUNNING').toLowerCase(); st.textContent=status||'RUNNING'; st.className='lens-state '+cls;
-  if(display!=null)log.innerHTML=lensEsc(display);
-  if(status!=='QUEUED')pg.classList.add('open'); lensRoute(i);
+function appendStepLine(step){
+  const i=providerIndex(step.provider); if(i<0)return;
+  const log=document.getElementById('lens-log-'+i); if(!log)return;
+  if(log.dataset.empty==='1'){ log.innerHTML=''; log.dataset.empty='0'; }
+  const newSet=new Set(step.new_fields||[]);
+  const block=document.createElement('div');
+  block.style.marginBottom='10px';
+  block.style.paddingBottom='8px';
+  block.style.borderBottom='1px solid var(--border)';
+  let head='<div style="color:var(--text);font-weight:700">p'+step.page_index+'/'+step.pages_total+' · '+lensEsc(step.page_url)+'</div>';
+  if(step.status==='NOT_MEASURED'){
+    head+='<div style="color:var(--red)">NOT_MEASURED — '+lensEsc(step.error||'timeout')+' (previous state carried forward)</div>';
+  } else if(step.status==='PARSE_FAILED'){
+    head+='<div style="color:var(--gold)">Response could not be parsed — previous state carried forward</div>';
+  }
+  const fieldOrder=['WHO','OFFER','AUDIENCE','PROBLEM','VALUE','WHY_YOU','EVIDENCE','COMPETITION','HOW_TO_BUY'];
+  const rows=fieldOrder.map(function(f){
+    const val=step.fields ? step.fields[f] : null;
+    const isNew=newSet.has(f);
+    const label=(FIELD_LABELS[f]||f);
+    if(val==null){
+      return '<div style="color:var(--xlight)">'+label+': —</div>';
+    }
+    const color=isNew?'var(--green)':'var(--mid)';
+    const tag=isNew?' <b style="color:var(--green)">NEW</b>':'';
+    return '<div style="color:'+color+'">'+label+': '+lensEsc(val)+tag+'</div>';
+  }).join('');
+  block.innerHTML=head+rows;
+  log.appendChild(block);
+  const disp=document.getElementById('lens-disp-'+i); if(disp) disp.scrollTop=disp.scrollHeight;
+  const pq=document.querySelector('#lens-pgm-'+i+' .lens-pq');
+  if(pq) pq.textContent=`page ${step.page_index}/${step.pages_total}`;
+}
+function renderPagesStrip(pages){
+  const strip=document.getElementById('lens-pages-strip'); if(!strip)return;
+  strip.style.display='block';
+  strip.innerHTML='<b style="color:var(--text)">'+pages.length+' pages discovered</b> — '+pages.map(p=>lensEsc(p.url.replace(/^https?:\/\//,''))).join(' · ');
+}
+function renderSynthesis(synth){
+  const host=document.getElementById('lens-synthesis'); if(!host)return;
+  host.style.display='block';
+  const rows=(synth.table||[]).map(function(r){
+    return '<tr><td style="padding:4px 10px;font-weight:600">'+lensEsc(r.field)+'</td>'
+      + PROVIDERS.map(function(p){
+          const v=r[p]||'—'; const bad=/never/i.test(v);
+          return '<td style="padding:4px 10px;'+(bad?'color:var(--red)':'color:var(--green)')+'">'+lensEsc(v)+'</td>';
+        }).join('')
+      + '</tr>';
+  }).join('');
+  const table='<table style="width:100%;border-collapse:collapse;font:11px/1.4 \'SF Mono\',ui-monospace,Menlo,monospace">'
+    + '<thead><tr><th style="text-align:left;padding:4px 10px;color:var(--light)">Field</th>'
+    + PROVIDERS.map(p=>'<th style="text-align:left;padding:4px 10px;color:var(--light)">'+p+'</th>').join('')
+    + '</tr></thead><tbody>'+rows+'</tbody></table>';
+  const measures=(synth.measures||[]).length
+    ? '<ol style="margin:14px 0 0;padding-left:20px;font-size:12.5px;line-height:1.6">'+synth.measures.map(m=>'<li>'+lensEsc(m)+'</li>').join('')+'</ol>'
+    : '';
+  const summary=synth.summary ? '<p style="margin:0 0 12px;font-size:13px;line-height:1.6;color:var(--mid)">'+lensEsc(synth.summary)+'</p>' : '';
+  host.innerHTML='<div style="font:700 10px \'SF Mono\',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--text);margin-bottom:10px">Synthesis — where each fact first became findable</div>'
+    + summary + table
+    + (measures ? '<div style="font:700 10px \'SF Mono\',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--text);margin:16px 0 4px">Measures</div>'+measures : '');
 }
 async function runLensChain(url){
   if(lensController) lensController.abort(); lensController=new AbortController(); initLensJob();
-  const meta=document.getElementById('lens-job-meta'); meta.textContent='SUBMITTED · RC=---- · 0/8';
+  const meta=document.getElementById('lens-job-meta'); meta.textContent='Discovering pages…';
+  PROVIDERS.forEach(name=>setProviderState(name,'QUEUED'));
   try{
-    const r=await fetch('/api/lens-run',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/x-ndjson'},body:JSON.stringify({target_url:url,session_id:'0002H',protocol:'P0-P7'}),signal:lensController.signal});
+    const r=await fetch('/api/lens-run',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/x-ndjson'},body:JSON.stringify({target_url:url}),signal:lensController.signal});
     if(!r.ok)throw new Error('HTTP '+r.status); if(!r.body)throw new Error('stream unavailable');
-    const rd=r.body.getReader(),dec=new TextDecoder();let buf='',doneCount=0,rc='----';
+    const rd=r.body.getReader(),dec=new TextDecoder();let buf='';
     while(true){const part=await rd.read(); if(part.done)break; buf+=dec.decode(part.value,{stream:true}); const lines=buf.split('\n');buf=lines.pop();
       for(const line of lines){if(!line.trim())continue;let ev;try{ev=JSON.parse(line)}catch{continue}
-        if(ev.type==='stage'){const i=LENS_STAGES.findIndex(x=>x.id===ev.stage);if(i<0)continue;lensSet(i,ev.status||'RUNNING',ev.display||'');if(['COMPLETE','PARTIAL','FAIL'].includes(ev.status)){doneCount=Math.max(doneCount,i+1);rc=ev.return_code||rc;}meta.textContent=`RUNNING · ${ev.stage} ${ev.status||''} · RC=${rc} · ${doneCount}/8`;}
-        if(ev.type==='job_end'){rc=ev.return_code||rc;meta.textContent=`COMPLETE · RC=${rc} · 8/8`;lensRoute(8);}
+        if(ev.type==='discovering'){ meta.textContent='Discovering pages…'; }
+        else if(ev.type==='pages'){ renderPagesStrip(ev.pages); PROVIDERS.forEach(name=>{lensProgress[name].total=ev.pages.length;}); meta.textContent=ev.pages.length+' pages found — walking ChatGPT first…'; }
+        else if(ev.type==='provider_start'){ setProviderState(ev.provider,'RUNNING');
+          const pgm=document.querySelector('#lens-pgm-'+providerIndex(ev.provider)); if(pgm) pgm.scrollIntoView({behavior:'smooth',block:'nearest'});
+          meta.textContent='Walking '+ev.provider+' through all pages…';
+        }
+        else if(ev.type==='step'){ appendStepLine(ev); lensProgress[ev.provider].done=ev.page_index;
+          meta.textContent=ev.provider+': page '+ev.page_index+'/'+ev.pages_total;
+        }
+        else if(ev.type==='provider_done'){ setProviderState(ev.provider,'DONE');
+          const idx=providerIndex(ev.provider); const pq=document.querySelector('#lens-pgm-'+idx+' .lens-pq'); if(pq) pq.textContent='done';
+          const pgm=document.querySelector('#lens-pgm-'+idx); if(pgm) pgm.classList.remove('open');
+        }
+        else if(ev.type==='synthesizing'){ meta.textContent='All 4 AIs finished · synthesizing…'; }
+        else if(ev.type==='synthesis'){ renderSynthesis(ev); }
+        else if(ev.type==='job_end'){ meta.textContent = ev.error ? ('Stopped: '+ev.error) : 'Complete — all 4 AIs, all pages'; }
       }
     }
-  }catch(e){if(e.name==='AbortError')return; meta.textContent='AI ORCHESTRATOR UNAVAILABLE · 167-SIGNAL AUDIT CONTINUES'; lensSet(0,'ERROR',`DISPLAY JOB ERROR\nTARGET............. ${url}\nENDPOINT........... /api/lens-run\nDETAIL............. ${e.message}\n\nNo AI result has been invented. The deterministic 167-signal audit remains independent.\nRETURN_CODE......... 9999`);}
+  }catch(e){if(e.name==='AbortError')return; meta.textContent='AI orchestrator unavailable — '+e.message;}
 }
 initLensJob();
+
+/* ── MARKET VIEW (P8) ── */
+let marketController=null;
+function initMarketJob(){
+  const host=document.getElementById('market-programs'); if(!host)return;
+  host.innerHTML=PROVIDERS.map((name,i)=>`<div class="lens-pgm open" id="market-pgm-${i}"><div class="lens-pgm-h" onclick="this.parentElement.classList.toggle('open')"><div class="lens-pid">${name}</div><div class="lens-pname">market view</div><div class="lens-pq">queued</div><div class="lens-state" id="market-state-${i}">QUEUED</div></div><div class="lens-display" id="market-disp-${i}"><div id="market-log-${i}" style="font:10.5px/1.55 'SF Mono',ui-monospace,Menlo,monospace">Waiting its turn…</div></div></div>`).join('');
+  const synth=document.getElementById('market-synthesis'); if(synth){synth.style.display='none'; synth.innerHTML='';}
+  document.getElementById('market-job-meta').textContent='READY';
+}
+function setMarketState(name,status){
+  const i=providerIndex(name); if(i<0)return;
+  const st=document.getElementById('market-state-'+i); if(!st)return;
+  const cls=String(status||'RUNNING').toLowerCase(); st.textContent=status; st.className='lens-state '+cls;
+}
+function renderMarketCandidates(step){
+  const i=providerIndex(step.provider); if(i<0)return;
+  const log=document.getElementById('market-log-'+i); if(!log)return;
+  log.innerHTML='';
+  if(step.status==='NOT_MEASURED'){
+    log.innerHTML='<div style="color:var(--red)">NOT_MEASURED — '+lensEsc(step.error||'timeout')+'</div>';
+    return;
+  }
+  if(step.status==='PARSE_FAILED'){
+    log.innerHTML='<div style="color:var(--gold)">Response could not be parsed.</div>';
+    return;
+  }
+  const presColor=step.target_present?'var(--green)':'var(--red)';
+  const presText=step.target_present?('PREZENT — poziția '+(step.target_position||'?')):'ABSENT';
+  let html='<div style="color:'+presColor+';font-weight:700;margin-bottom:6px">'+presText+'</div>';
+  if(step.target_note) html+='<div style="color:var(--mid);margin-bottom:8px;font-style:italic">'+lensEsc(step.target_note)+'</div>';
+  html+='<div style="color:var(--light);font-weight:600;margin-bottom:3px">Candidați sugerați:</div>';
+  html+=(step.candidates||[]).map(function(c){
+    const isTarget=(c.name||'').toLowerCase()===((document.getElementById('market-name-input').value||'').trim().toLowerCase());
+    return '<div style="color:'+(isTarget?'var(--green)':'var(--mid)')+(isTarget?';font-weight:700':'')+'">• '+lensEsc(c.name)+' — '+lensEsc(c.why||'')+'</div>';
+  }).join('') || '<div style="color:var(--xlight)">(niciunul)</div>';
+  log.innerHTML=html;
+  const pq=document.querySelector('#market-pgm-'+i+' .lens-pq'); if(pq) pq.textContent=step.target_present?'present':'absent';
+}
+function appendMarketComparison(step){
+  const i=providerIndex(step.provider); if(i<0)return;
+  const log=document.getElementById('market-log-'+i); if(!log)return;
+  const div=document.createElement('div');
+  div.style.marginTop='8px'; div.style.paddingTop='8px'; div.style.borderTop='1px solid var(--border)';
+  if(step.comparison){
+    div.innerHTML='<div style="color:var(--light);font-weight:600;margin-bottom:3px">Comparație directă:</div><div style="color:var(--text)">'+lensEsc(step.comparison)+'</div>';
+  } else {
+    div.innerHTML='<div style="color:var(--xlight)">Comparație indisponibilă'+(step.comparison_error?(' — '+lensEsc(step.comparison_error)):'')+'</div>';
+  }
+  log.appendChild(div);
+}
+function renderMarketSynthesis(synth){
+  const host=document.getElementById('market-synthesis'); if(!host)return;
+  host.style.display='block';
+  const rows=(synth.table||[]).map(function(r){
+    const bad=/^no/i.test(r.present||'');
+    return '<tr><td style="padding:4px 10px;font-weight:600">'+lensEsc(r.provider)+'</td>'
+      +'<td style="padding:4px 10px;'+(bad?'color:var(--red)':'color:var(--green)')+'">'+lensEsc(r.present||'—')+'</td>'
+      +'<td style="padding:4px 10px;color:var(--mid)">'+lensEsc(r.named_with||'—')+'</td>'
+      +'<td style="padding:4px 10px;color:var(--mid)">'+lensEsc(r.verdict||'—')+'</td></tr>';
+  }).join('');
+  const table='<table style="width:100%;border-collapse:collapse;font:11px/1.4 \'SF Mono\',ui-monospace,Menlo,monospace">'
+    +'<thead><tr><th style="text-align:left;padding:4px 10px;color:var(--light)">AI</th><th style="text-align:left;padding:4px 10px;color:var(--light)">Prezent?</th><th style="text-align:left;padding:4px 10px;color:var(--light)">Alături de</th><th style="text-align:left;padding:4px 10px;color:var(--light)">Verdict</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  const measures=(synth.measures||[]).length
+    ? '<ol style="margin:14px 0 0;padding-left:20px;font-size:12.5px;line-height:1.6">'+synth.measures.map(m=>'<li>'+lensEsc(m)+'</li>').join('')+'</ol>' : '';
+  const summary=synth.summary ? '<p style="margin:0 0 12px;font-size:13px;line-height:1.6;color:var(--mid)">'+lensEsc(synth.summary)+'</p>' : '';
+  host.innerHTML='<div style="font:700 10px \'SF Mono\',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--text);margin-bottom:10px">Synthesis — prezență pe piață, nu pe site</div>'
+    +summary+table+(measures?'<div style="font:700 10px \'SF Mono\',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--text);margin:16px 0 4px">Măsuri</div>'+measures:'');
+}
+async function startMarketView(){
+  if(marketController) marketController.abort(); marketController=new AbortController(); initMarketJob();
+  const meta=document.getElementById('market-job-meta');
+  const intent=(document.getElementById('market-intent-input').value||'').trim();
+  const name=(document.getElementById('market-name-input').value||'').trim();
+  const url=(document.getElementById('market-url-input').value||'').trim();
+  if(!intent){ meta.textContent='Descrie nevoia clientului mai întâi.'; return; }
+  if(!name){ meta.textContent='Numele firmei tale e necesar — cum ar trebui să te recunoască AI.'; return; }
+  meta.textContent='Se pornește…';
+  try{
+    const r=await fetch('/api/lens-market',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/x-ndjson'},body:JSON.stringify({client_intent:intent,target_name:name,target_url:url}),signal:marketController.signal});
+    if(!r.ok)throw new Error('HTTP '+r.status); if(!r.body)throw new Error('stream unavailable');
+    const rd=r.body.getReader(),dec=new TextDecoder();let buf='';
+    while(true){const part=await rd.read(); if(part.done)break; buf+=dec.decode(part.value,{stream:true}); const lines=buf.split('\n');buf=lines.pop();
+      for(const line of lines){if(!line.trim())continue;let ev;try{ev=JSON.parse(line)}catch{continue}
+        if(ev.type==='market_provider_start'){ setMarketState(ev.provider,'RUNNING'); meta.textContent='Se întreabă '+ev.provider+'…';
+          const idx=providerIndex(ev.provider); const pgm=document.querySelector('#market-pgm-'+idx); if(pgm) pgm.scrollIntoView({behavior:'smooth',block:'nearest'});
+        }
+        else if(ev.type==='market_candidates'){ renderMarketCandidates(ev); }
+        else if(ev.type==='market_comparison'){ appendMarketComparison(ev); }
+        else if(ev.type==='market_provider_done'){ setMarketState(ev.provider,'DONE');
+          const idx=providerIndex(ev.provider); const pgm=document.querySelector('#market-pgm-'+idx); if(pgm) pgm.classList.remove('open');
+        }
+        else if(ev.type==='synthesizing'){ meta.textContent='Toți cei 4 AI au răspuns · se sintetizează…'; }
+        else if(ev.type==='market_synthesis'){ renderMarketSynthesis(ev); }
+        else if(ev.type==='job_end'){ meta.textContent = ev.error ? ('Oprit: '+ev.error) : 'Complet — toți cei 4 AI'; }
+      }
+    }
+  }catch(e){ if(e.name==='AbortError')return; meta.textContent='Indisponibil — '+e.message; }
+}
+initMarketJob();
 
 async function startAudit(){
   let raw=document.getElementById('url-input').value.trim();
@@ -2208,6 +2461,7 @@ async function runAudit(url){
       AUD.global=den?Math.round(num/den):0;
     }
   }
+  recordSessionObservation(AUD);
 
   log('Generating AI synthesis…','sl-info');await sleep(200);
   const [synth,ap]=await Promise.all([fetchSynth(AUD),fetchAP(AUD)]);
