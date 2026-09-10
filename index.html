@@ -6,7 +6,7 @@
 <!-- ══ SEO META CORE ══ -->
 <title>AI-LENS™ — what AI systems see on your site</title>
 <meta name="description" content="Diagnose how AI systems see your website. 167 signals across AI Signals, AEO, GEO, AIO, SEO and A2A — deterministic scoring on observed evidence, with no language model in the loop.">
-<link rel="canonical" href="https://3webobs.com/">
+<link rel="canonical" href="https://ai-lens.eu/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large">
 <meta name="author" content="Dan Ionesco">
@@ -19,16 +19,16 @@
 <meta name="format-detection" content="telephone=no">
 
 <!-- ══ OPEN GRAPH — Meta / Facebook / Instagram / LinkedIn ══ -->
-<meta property="og:site_name" content="3webs">
-<meta property="og:title" content="3webs | Human Web, AI Web and Machine Web Visibility">
-<meta property="og:description" content="Enter any URL and receive a full-stack AI visibility audit — 167 signals, real evidence, a prioritised action plan. First audit free.">
+<meta property="og:site_name" content="AI-LENS™">
+<meta property="og:title" content="AI-LENS™ | What AI systems actually see">
+<meta property="og:description" content="Enter any URL and follow the AI-LENS P0–P7 execution chain: baseline, exact page, same-domain reconstruction, natural discovery, survival, gaps, AI views and cross-AI merge.">
 <meta property="og:image" content="https://3webobs.com/assets/og-cover.png">
 <meta property="og:image:secure_url" content="https://3webobs.com/assets/og-cover.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="3webs &mdash; Human Web, AI Web and Machine Web visibility">
-<meta property="og:url" content="https://3webobs.com/">
+<meta property="og:url" content="https://ai-lens.eu/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="ro_RO">
@@ -41,8 +41,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@aipath512">
 <meta name="twitter:creator" content="@aipath512">
-<meta name="twitter:title" content="3webs | Human Web, AI Web and Machine Web Visibility">
-<meta name="twitter:description" content="Enter any URL and receive a full-stack AI visibility audit — 167 signals, real evidence, a prioritised action plan. First audit free.">
+<meta name="twitter:title" content="AI-LENS™ | What AI systems actually see">
+<meta name="twitter:description" content="Run the P0–P7 AI-LENS observation chain on any URL and compare how AI systems reconstruct the same business.">
 <meta name="twitter:image" content="https://3webobs.com/assets/og-cover.png">
 <meta name="twitter:image:alt" content="3webs &mdash; Human Web, AI Web and Machine Web visibility">
 
@@ -899,6 +899,38 @@ grid-template-columns:repeat(4,1fr);gap:18px 26px;}
 .hub-list span{font-size:11.5px;line-height:1.5;opacity:.55;}
 @media(max-width:860px){.hub-list{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:460px){.hub-list{grid-template-columns:1fr;}}
+
+/* ══ AI-LENS P0–P7 MAINFRAME EXECUTION ══ */
+.lens-job{max-width:960px;margin:22px auto 4px;text-align:left;border:1px solid var(--border-md);border-radius:var(--r);background:var(--bg);box-shadow:var(--sh1);overflow:hidden}
+.lens-job-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;border-bottom:1px solid var(--border);background:var(--bg2)}
+.lens-job-title{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.lens-job-meta{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:10px;color:var(--light);text-align:right}
+.lens-rail{display:grid;grid-template-columns:repeat(9,minmax(72px,1fr));gap:0;padding:16px 12px 12px;overflow-x:auto;background:var(--bg)}
+.lens-st{position:relative;min-width:72px;text-align:center;padding:0 3px}
+.lens-st:before{content:'';position:absolute;top:9px;left:-50%;width:100%;height:2px;background:var(--bg3);z-index:0}
+.lens-st:first-child:before{display:none}
+.lens-dot{position:relative;z-index:1;width:18px;height:18px;border-radius:50%;margin:0 auto 6px;border:2px solid var(--xlight);background:var(--bg)}
+.lens-st.done .lens-dot{background:var(--green);border-color:var(--green)}
+.lens-st.active .lens-dot{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 4px rgba(0,81,168,.12)}
+.lens-st.done:before,.lens-st.active:before{background:var(--green)}
+.lens-st b{display:block;font:700 9px/1.2 'SF Mono',ui-monospace,monospace;letter-spacing:.03em;color:var(--text)}
+.lens-st span{display:block;margin-top:3px;font-size:8.5px;line-height:1.15;color:var(--light);white-space:nowrap}
+.lens-programs{border-top:1px solid var(--border)}
+.lens-pgm{border-bottom:1px solid var(--border)}
+.lens-pgm:last-child{border-bottom:0}
+.lens-pgm-h{display:grid;grid-template-columns:44px 96px minmax(160px,1fr) 94px;gap:8px;align-items:center;padding:10px 13px;background:var(--bg);cursor:pointer}
+.lens-pgm-h:hover{background:var(--bg2)}
+.lens-pid{font:800 11px 'SF Mono',ui-monospace,monospace;color:var(--blue)!important}
+.lens-pname{font:600 9.5px 'SF Mono',ui-monospace,monospace;color:var(--mid)!important}
+.lens-pq{font-size:11.5px;font-weight:600;color:var(--text)!important}
+.lens-state{text-align:right;font:800 9.5px 'SF Mono',ui-monospace,monospace;color:var(--xlight)!important}
+.lens-state.running{color:var(--gold)!important}.lens-state.complete{color:var(--green)!important}.lens-state.partial{color:var(--gold)!important}.lens-state.fail,.lens-state.error{color:var(--red)!important}
+.lens-display{display:none;padding:12px 14px 14px;background:var(--bg2);border-top:1px solid var(--border)}
+.lens-pgm.open .lens-display{display:block}
+.lens-display pre{margin:0;white-space:pre-wrap;word-break:break-word;font:10.5px/1.55 'SF Mono',ui-monospace,Menlo,monospace;color:var(--mid)!important}
+.lens-note{padding:9px 13px;border-top:1px solid var(--border);font-size:10.5px;line-height:1.45;color:var(--light)!important;background:var(--bg2)}
+@media(max-width:700px){.lens-pgm-h{grid-template-columns:36px 80px 1fr 70px}.lens-pq{font-size:10.5px}.lens-job-meta{display:none}}
+
 </style>
 
 
@@ -915,12 +947,12 @@ grid-template-columns:repeat(4,1fr);gap:18px 26px;}
 <!-- HEADER -->
 <header>
   <div class="brand">
-    <div class="brand-mark">3<em>webs</em></div>
-    <p>3webs Visibility Engine</p>
+    <div class="brand-mark">AI-<em>LENS</em>™</div>
+    <p>AI business observation · P0–P7 execution</p>
     <button id="toggle" onclick="toggleTheme()"><span id="ti">☾</span><span id="tl">Dark</span></button>
   </div>
   <div style="display:flex;align-items:center;gap:14px;">
-    <div class="hd-meta">V 3.6 · <span class="hd-sess" data-session-badge title="Operating session">0001C</span> · AI-FIRST<br><span style="opacity:.5;font-size:9px">Human-Web · Human-AI · A2A</span><br><span class="hd-clock" id="gmt-clock">—</span></div>
+    <div class="hd-meta">V 4.0 · <span class="hd-sess" data-session-badge title="Operating session">0002H</span> · AI-FIRST<br><span style="opacity:.5;font-size:9px">Human-Web · Human-AI · A2A</span><br><span class="hd-clock" id="gmt-clock">—</span></div>
     <button id="menu-btn" onclick="openMenu()" aria-label="Menu">
     <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
@@ -944,6 +976,27 @@ grid-template-columns:repeat(4,1fr);gap:18px 26px;}
     <span id="url-input-hint" class="vh">Enter a domain or full address, for example yoursite.com</span>
     <button class="url-go" id="go-btn" onclick="startAudit()">Run Audit</button>
   </div>
+
+  <!-- AI-LENS P0–P7 EXECUTION CHAIN -->
+  <section class="lens-job" id="lens-job" aria-live="polite">
+    <div class="lens-job-head">
+      <div class="lens-job-title">JOB AILENS0002H · P0→P7</div>
+      <div class="lens-job-meta" id="lens-job-meta">READY · RC=---- · 0/8</div>
+    </div>
+    <div class="lens-rail" id="lens-rail">
+      <div class="lens-st active" data-lens-stage="D"><div class="lens-dot"></div><b>DEPARTURE</b><span>URL</span></div>
+      <div class="lens-st" data-lens-stage="P0"><div class="lens-dot"></div><b>P0</b><span>EXISTS</span></div>
+      <div class="lens-st" data-lens-stage="P1"><div class="lens-dot"></div><b>P1</b><span>PAGE</span></div>
+      <div class="lens-st" data-lens-stage="P2"><div class="lens-dot"></div><b>P2</b><span>DOMAIN</span></div>
+      <div class="lens-st" data-lens-stage="P3"><div class="lens-dot"></div><b>P3</b><span>FIND</span></div>
+      <div class="lens-st" data-lens-stage="P4"><div class="lens-dot"></div><b>P4</b><span>SURVIVE</span></div>
+      <div class="lens-st" data-lens-stage="P5"><div class="lens-dot"></div><b>P5</b><span>GAPS</span></div>
+      <div class="lens-st" data-lens-stage="P6"><div class="lens-dot"></div><b>P6</b><span>VIEWS</span></div>
+      <div class="lens-st" data-lens-stage="P7"><div class="lens-dot"></div><b>P7</b><span>MERGE</span></div>
+    </div>
+    <div class="lens-programs" id="lens-programs"></div>
+    <div class="lens-note">P0–P3 observe. P4 measures information survival. P5 classifies gaps. P6 normalizes one view per AI. P7 merges frozen views. Technical cause and remediation are not invented here; they are handed to 3WEBOBS.</div>
+  </section>
 
   <!-- DIVIDER -->
   <div class="cta-divider">
@@ -2003,6 +2056,52 @@ let AUD={},zoom='normal',filt='all',sortBy='score';
 
 function h(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=(h*16777619)>>>0;}return(h%10000)/10000;}
 
+
+const LENS_STAGES=[
+  {id:'P0',pgm:'PGM00BASE',q:'WHAT EXISTS?'},
+  {id:'P1',pgm:'PGM01PAGE',q:'WHAT DOES AI SEE ON THE EXACT PAGE?'},
+  {id:'P2',pgm:'PGM02DOMAIN',q:'WHAT CAN AI RECONSTRUCT ACROSS THE DOMAIN?'},
+  {id:'P3',pgm:'PGM03NAT',q:'WHAT DOES AI FIND NATURALLY?'},
+  {id:'P4',pgm:'PGM04FLOW',q:'WHAT INFORMATION SURVIVED?'},
+  {id:'P5',pgm:'PGM05GAPS',q:'WHERE IS INFORMATION LOST?'},
+  {id:'P6',pgm:'PGM06VIEWS',q:'WHAT VERSION OF THE BUSINESS DOES EACH AI SEE?'},
+  {id:'P7',pgm:'PGM07MERGE',q:'DO THE AI SYSTEMS SEE THE SAME BUSINESS?'}
+];
+let lensController=null;
+function lensEsc(x){return String(x==null?'':x).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function initLensJob(){
+  const host=document.getElementById('lens-programs'); if(!host)return;
+  host.innerHTML=LENS_STAGES.map((d,i)=>`<div class="lens-pgm" id="lens-pgm-${i}"><div class="lens-pgm-h" onclick="this.parentElement.classList.toggle('open')"><div class="lens-pid">${d.id}</div><div class="lens-pname">${d.pgm}</div><div class="lens-pq">${d.q}</div><div class="lens-state" id="lens-state-${i}">QUEUED</div></div><div class="lens-display"><pre id="lens-log-${i}">WAITING FOR ${d.pgm}...</pre></div></div>`).join('');
+  lensRoute(-1); document.getElementById('lens-job-meta').textContent='READY · RC=---- · 0/8';
+}
+function lensRoute(current){
+  const nodes=[...document.querySelectorAll('.lens-st')];
+  nodes.forEach((n,i)=>{n.classList.remove('done','active'); if(i===0&&current>=0)n.classList.add('done'); if(i>0&&i-1<current)n.classList.add('done'); if(i>0&&i-1===current)n.classList.add('active');});
+  if(current<0&&nodes[0])nodes[0].classList.add('active');
+}
+function lensSet(i,status,display){
+  const st=document.getElementById('lens-state-'+i),pg=document.getElementById('lens-pgm-'+i),log=document.getElementById('lens-log-'+i); if(!st)return;
+  const cls=String(status||'RUNNING').toLowerCase(); st.textContent=status||'RUNNING'; st.className='lens-state '+cls;
+  if(display!=null)log.innerHTML=lensEsc(display);
+  if(status!=='QUEUED')pg.classList.add('open'); lensRoute(i);
+}
+async function runLensChain(url){
+  if(lensController) lensController.abort(); lensController=new AbortController(); initLensJob();
+  const meta=document.getElementById('lens-job-meta'); meta.textContent='SUBMITTED · RC=---- · 0/8';
+  try{
+    const r=await fetch('/api/lens-run',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/x-ndjson'},body:JSON.stringify({target_url:url,session_id:'0002H',protocol:'P0-P7'}),signal:lensController.signal});
+    if(!r.ok)throw new Error('HTTP '+r.status); if(!r.body)throw new Error('stream unavailable');
+    const rd=r.body.getReader(),dec=new TextDecoder();let buf='',doneCount=0,rc='----';
+    while(true){const part=await rd.read(); if(part.done)break; buf+=dec.decode(part.value,{stream:true}); const lines=buf.split('\n');buf=lines.pop();
+      for(const line of lines){if(!line.trim())continue;let ev;try{ev=JSON.parse(line)}catch{continue}
+        if(ev.type==='stage'){const i=LENS_STAGES.findIndex(x=>x.id===ev.stage);if(i<0)continue;lensSet(i,ev.status||'RUNNING',ev.display||'');if(['COMPLETE','PARTIAL','FAIL'].includes(ev.status)){doneCount=Math.max(doneCount,i+1);rc=ev.return_code||rc;}meta.textContent=`RUNNING · ${ev.stage} ${ev.status||''} · RC=${rc} · ${doneCount}/8`;}
+        if(ev.type==='job_end'){rc=ev.return_code||rc;meta.textContent=`COMPLETE · RC=${rc} · 8/8`;lensRoute(8);}
+      }
+    }
+  }catch(e){if(e.name==='AbortError')return; meta.textContent='AI ORCHESTRATOR UNAVAILABLE · 167-SIGNAL AUDIT CONTINUES'; lensSet(0,'ERROR',`DISPLAY JOB ERROR\nTARGET............. ${url}\nENDPOINT........... /api/lens-run\nDETAIL............. ${e.message}\n\nNo AI result has been invented. The deterministic 167-signal audit remains independent.\nRETURN_CODE......... 9999`);}
+}
+initLensJob();
+
 async function startAudit(){
   let raw=document.getElementById('url-input').value.trim();
   if(!raw){
@@ -2012,8 +2111,9 @@ async function startAudit(){
   }
   let clean=raw.replace(/^(https?:\/\/)?(www\.)?/i,'').replace(/\s+/g,'');
   let url='https://'+clean;
-  document.getElementById('input-zone').style.display='none';
+  document.getElementById('input-zone').style.display='block';
   document.getElementById('loading-zone').style.display='block';
+  runLensChain(url);
   document.getElementById('ld-url').textContent=url;
   document.getElementById('results-zone').innerHTML='';
   document.getElementById('results-zone').style.display='none';
