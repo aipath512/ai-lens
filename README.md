@@ -38,3 +38,11 @@ P0–P3 observe. P4–P7 use frozen prior-stage evidence. Technical root cause a
 - P4-P7 frozen-chain normalizer now falls back OpenAI → Claude → Gemini, so OpenAI billing exhaustion does not block the rest of the job.
 - Existing Cloudflare secrets remain unchanged: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, `PERPLEXITY_API_KEY`.
 - Optional overrides: `OPENAI_MODEL`, `ANTHROPIC_MODEL`, `GEMINI_MODEL`, `PERPLEXITY_MODEL`.
+
+
+## v4.2 provider fail-safe
+- P1/P2/P3 provider calls have a 30-second hard timeout per provider.
+- A dead/slow provider is recorded NOT_MEASURED; the chain continues to the next stage.
+- Gemini uses the current generateContent REST endpoint with x-goog-api-key and defaults to gemini-3.8-flash.
+- Perplexity uses the still-live Sonar Chat Completions endpoint /chat/completions with sonar-pro.
+- No provider can indefinitely block P1 and therefore P2-P7.
