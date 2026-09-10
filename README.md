@@ -1,4 +1,4 @@
-# AI-LENS — v4.0 / SESSION 0002H
+# AI-LENS — v4.1 / SESSION 0002H
 
 Cloudflare Pages project. White theme is the default.
 
@@ -30,3 +30,11 @@ Existing email/lead variables remain unchanged (`RESEND_API_KEY`, etc.).
 P0 Baseline → P1 Exact Page → P2 Same Domain → P3 Natural Discovery → P4 Information Survival → P5 Gap Classification → P6 Normalized AI Views → P7 Cross-AI Merge.
 
 P0–P3 observe. P4–P7 use frozen prior-stage evidence. Technical root cause and remediation are explicitly outside AI-LENS and should be handed to 3WEBOBS / AI-READY only after diagnosis.
+
+
+## v4.1 provider fixes — 2026-09-10
+- Gemini default model: `gemini-3.8-flash` (stable GA).
+- Perplexity endpoint: `POST https://api.perplexity.ai/v1/sonar` with default model `sonar-pro`.
+- P4-P7 frozen-chain normalizer now falls back OpenAI → Claude → Gemini, so OpenAI billing exhaustion does not block the rest of the job.
+- Existing Cloudflare secrets remain unchanged: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, `PERPLEXITY_API_KEY`.
+- Optional overrides: `OPENAI_MODEL`, `ANTHROPIC_MODEL`, `GEMINI_MODEL`, `PERPLEXITY_MODEL`.
