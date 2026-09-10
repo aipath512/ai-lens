@@ -51,8 +51,8 @@ export async function onRequestPost(context) {
 function normalizeUrl(v){try{v=String(v||'').trim();if(!/^https?:\/\//i.test(v))v='https://'+v;const u=new URL(v);return u.protocol==='https:'||u.protocol==='http:'?u.href:null}catch{return null}}
 function stripHtml(html){return String(html||'').replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim()}
 function linksFrom(html,base){const out=[];const re=/href=["']([^"'#]+)["']/gi;let m;while((m=re.exec(html))){try{const u=new URL(m[1],base);if(u.origin===new URL(base).origin&&!out.includes(u.href))out.push(u.href)}catch{}}return out}
-async function getText(url){const r=await fetch(url,{headers:{'User-Agent':'AiVenture-AI-LENS/1.0','Accept':'text/html,application/xhtml+xml,application/xml,text/plain;q=0.8,*/*;q=0.5'},redirect:'follow'});const ct=r.headers.get('content-type')||'';const raw=await r.text();return {url:r.url,status:r.status,ct,raw,text:stripHtml(raw).slice(0,18000)}}
-async function crawlTarget(target){const home=await getText(target);let urls=linksFrom(home.raw,home.url).slice(0,8);try{const sm=new URL('/sitemap.xml',home.url).href;const r=await fetch(sm,{headers:{'User-Agent':'AiVenture-AI-LENS/1.0'}});if(r.ok){const x=await r.text();const loc=[...x.matchAll(/<loc>(.*?)<\/loc>/gi)].map(m=>m[1].trim());for(const u of loc){try{if(new URL(u).origin===new URL(home.url).origin&&!urls.includes(u))urls.push(u)}catch{}}}}catch{}
+async function getText(url){const r=await fetchWithTimeout(url,{headers:{'User-Agent':'AiVenture-AI-LENS/1.0','Accept':'text/html,application/xhtml+xml,application/xml,text/plain;q=0.8,*/*;q=0.5'},redirect:'follow'});const ct=r.headers.get('content-type')||'';const raw=await r.text();return {url:r.url,status:r.status,ct,raw,text:stripHtml(raw).slice(0,18000)}}
+async function crawlTarget(target){const home=await getText(target);let urls=linksFrom(home.raw,home.url).slice(0,8);try{const sm=new URL('/sitemap.xml',home.url).href;const r=await fetchWithTimeout(sm,{headers:{'User-Agent':'AiVenture-AI-LENS/1.0'}});if(r.ok){const x=await r.text();const loc=[...x.matchAll(/<loc>(.*?)<\/loc>/gi)].map(m=>m[1].trim());for(const u of loc){try{if(new URL(u).origin===new URL(home.url).origin&&!urls.includes(u))urls.push(u)}catch{}}}}catch{}
   urls=urls.slice(0,10);const pages=[home];for(const u of urls){if(u===home.url)continue;try{const p=await getText(u);if(p.status<500)pages.push(p)}catch{}}
   const corpus=pages.map(p=>`SOURCE: ${p.url}\nSTATUS: ${p.status}\nTEXT: ${p.text}`).join('\n\n---\n\n').slice(0,70000);return {homeUrl:home.url,homeStatus:home.status,homeText:home.text,pages:pages.map(p=>({url:p.url,status:p.status,content_type:p.ct,text:p.text.slice(0,6000)})),corpus};}
 function displayStart(p,target,mode){return `DISPLAY ${p} START\nTARGET............. ${target}\nMODE............... ${mode}\nSTATUS............. RUNNING`}
@@ -62,17 +62,48 @@ function exactPagePrompt(target,text){return `${baseRules}\n\nP1 EXACT PAGE OBSE
 function domainPrompt(target,corpus){return `${baseRules}\n\nP2 SAME-DOMAIN BUSINESS RECONSTRUCTION. Target: ${target}. Use only the same-domain fetched corpus below. Cite source URLs in-line.\n\n${corpus}`}
 function naturalPrompt(target){return `P3 NATURAL DISCOVERY TEST for ${target}. Use your current web/search capability naturally. Do not systematically enumerate sitemap or force hidden paths. Report SOURCES SELECTED, whether OFFICIAL TARGET selected and directly accessed, then IDENTITY, OFFER, AUDIENCE, LOCATION, PEOPLE, CONTACT, TRUST, DEEP_PROOF, OPERATING_MODEL, DIGITAL_AI, UNKNOWNS, PROVENANCE. Distinguish direct target, external source, snippet, prior context, and inference. Do not claim crawler behavior.`}
 
+const PROVIDER_TIMEOUT_MS = 30000;
+
+function withTimeout(promiseFactory, label, ms = PROVIDER_TIMEOUT_MS) {
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    const timer = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      reject(new Error(`${label} TIMEOUT after ${Math.round(ms/1000)}s`));
+    }, ms);
+    Promise.resolve()
+      .then(promiseFactory)
+      .then(v => { if (!settled) { settled = true; clearTimeout(timer); resolve(v); } })
+      .catch(e => { if (!settled) { settled = true; clearTimeout(timer); reject(e); } });
+  });
+}
+
+async function fetchWithTimeout(url, options = {}, ms = PROVIDER_TIMEOUT_MS) {
+  const ac = new AbortController();
+  const timer = setTimeout(() => ac.abort(), ms);
+  try {
+    return await fetch(url, {...options, signal: ac.signal});
+  } catch (e) {
+    if (e && e.name === 'AbortError') throw new Error(`HTTP TIMEOUT after ${Math.round(ms/1000)}s: ${url}`);
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function runProviders(env,prompt){const jobs=[['ChatGPT',()=>callOpenAI(env,prompt,false)],['Claude',()=>callClaude(env,prompt,false)],['Gemini',()=>callGemini(env,prompt,false)],['Perplexity',()=>callPerplexity(env,prompt,false)]];return settle(jobs)}
 async function runNaturalProviders(env,target){const prompt=naturalPrompt(target);const jobs=[['ChatGPT',()=>callOpenAI(env,prompt,true)],['Claude',()=>callClaude(env,prompt,true)],['Gemini',()=>callGemini(env,prompt,true)],['Perplexity',()=>callPerplexity(env,prompt,true)]];return settle(jobs)}
-async function settle(jobs){const rs=await Promise.all(jobs.map(async([name,fn])=>{try{const text=await fn();return {name,status:'PASS',text}}catch(e){return {name,status:'NOT_MEASURED',text:String(e.message||e)}}}));return rs}
+async function settle(jobs){const rs=await Promise.all(jobs.map(async([name,fn])=>{try{const text=await withTimeout(fn,name);return {name,status:'PASS',text}}catch(e){return {name,status:'NOT_MEASURED',text:String(e.message||e)}}}));return rs}
 function aggregateStatus(rs){const ok=rs.filter(x=>x.status==='PASS').length;return ok===rs.length?'COMPLETE':ok?'PARTIAL':'FAIL'}
 function codeFor(rs){return rs.every(x=>x.status==='PASS')?'0000':rs.some(x=>x.status==='PASS')?'0004':'0008'}
 function providerDisplay(stage,label,rs){return `DISPLAY ${stage} START\n${label}\n\n${rs.map(x=>`[${x.name}] ${x.status}\n${x.text.slice(0,5000)}`).join('\n\n--------------------\n\n')}\n\nDISPLAY ${stage} END\nRETURN_CODE......... ${codeFor(rs)}`}
 
-async function callOpenAI(env,prompt,web){if(!env.OPENAI_API_KEY)throw new Error('OPENAI_API_KEY not configured');const body={model:env.OPENAI_MODEL||'gpt-5.6-terra',input:prompt};if(web)body.tools=[{type:'web_search'}];const r=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:`Bearer ${env.OPENAI_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json();if(!r.ok)throw new Error(j.error?.message||'OpenAI HTTP '+r.status);return j.output_text||j.output?.flatMap(o=>o.content||[]).map(c=>c.text||'').join('\n')||'NO_TEXT_OUTPUT'}
-async function callClaude(env,prompt,web){if(!env.ANTHROPIC_API_KEY)throw new Error('ANTHROPIC_API_KEY not configured');const body={model:env.ANTHROPIC_MODEL||'claude-sonnet-4-5',max_tokens:2200,messages:[{role:'user',content:prompt}]};if(web)body.tools=[{type:'web_search_20250305',name:'web_search',max_uses:5}];const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':env.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01','Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json();if(!r.ok)throw new Error(j.error?.message||'Anthropic HTTP '+r.status);return (j.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('\n')||'NO_TEXT_OUTPUT'}
-async function callGemini(env,prompt,web){if(!env.GEMINI_API_KEY)throw new Error('GEMINI_API_KEY not configured');const model=env.GEMINI_MODEL||'gemini-3.8-flash';const body={contents:[{parts:[{text:prompt}]}]};if(web)body.tools=[{google_search:{}}];const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(env.GEMINI_API_KEY)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json();if(!r.ok)throw new Error(j.error?.message||'Gemini HTTP '+r.status);return j.candidates?.[0]?.content?.parts?.map(x=>x.text||'').join('\n')||'NO_TEXT_OUTPUT'}
-async function callPerplexity(env,prompt,web){if(!env.PERPLEXITY_API_KEY)throw new Error('PERPLEXITY_API_KEY not configured');const r=await fetch('https://api.perplexity.ai/v1/sonar',{method:'POST',headers:{Authorization:`Bearer ${env.PERPLEXITY_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:env.PERPLEXITY_MODEL||'sonar-pro',messages:[{role:'user',content:prompt}]})});const j=await r.json();if(!r.ok)throw new Error(j.error?.message||'Perplexity HTTP '+r.status);return j.choices?.[0]?.message?.content||'NO_TEXT_OUTPUT'}
+async function callOpenAI(env,prompt,web){if(!env.OPENAI_API_KEY)throw new Error('OPENAI_API_KEY not configured');const body={model:env.OPENAI_MODEL||'gpt-5.6-terra',input:prompt};if(web)body.tools=[{type:'web_search'}];const r=await fetchWithTimeout('https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:`Bearer ${env.OPENAI_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json();if(!r.ok)throw new Error(j.error?.message||'OpenAI HTTP '+r.status);return j.output_text||j.output?.flatMap(o=>o.content||[]).map(c=>c.text||'').join('\n')||'NO_TEXT_OUTPUT'}
+async function callClaude(env,prompt,web){if(!env.ANTHROPIC_API_KEY)throw new Error('ANTHROPIC_API_KEY not configured');const body={model:env.ANTHROPIC_MODEL||'claude-sonnet-4-5',max_tokens:2200,messages:[{role:'user',content:prompt}]};if(web)body.tools=[{type:'web_search_20250305',name:'web_search',max_uses:5}];const r=await fetchWithTimeout('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':env.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01','Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json();if(!r.ok)throw new Error(j.error?.message||'Anthropic HTTP '+r.status);return (j.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('\n')||'NO_TEXT_OUTPUT'}
+async function callGemini(env,prompt,web){if(!env.GEMINI_API_KEY)throw new Error('GEMINI_API_KEY not configured');const model=env.GEMINI_MODEL||'gemini-3.8-flash';const body={contents:[{parts:[{text:prompt}]}]};if(web)body.tools=[{google_search:{}}];const r=await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':env.GEMINI_API_KEY},body:JSON.stringify(body)});const j=await r.json();if(!r.ok)throw new Error(j.error?.message||'Gemini HTTP '+r.status);return j.candidates?.[0]?.content?.parts?.map(x=>x.text||'').join('
+')||'NO_TEXT_OUTPUT'}
+async function callPerplexity(env,prompt,web){if(!env.PERPLEXITY_API_KEY)throw new Error('PERPLEXITY_API_KEY not configured');const r=await fetchWithTimeout('https://api.perplexity.ai/chat/completions',{method:'POST',headers:{Authorization:`Bearer ${env.PERPLEXITY_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:env.PERPLEXITY_MODEL||'sonar-pro',messages:[{role:'user',content:prompt}]})});const j=await r.json();if(!r.ok)throw new Error(j.error?.message||'Perplexity HTTP '+r.status);return j.choices?.[0]?.message?.content||'NO_TEXT_OUTPUT'}
 
 async function analyzeFrozen(env,frozen){
   const prompt=`You are the AI-LENS frozen-chain normalizer. NO WEB SEARCH. Use ONLY the JSON evidence below. Never diagnose technical root cause. Never prescribe remediation. Produce STRICT JSON with keys p4,p5,p6,p7, each a concise DISPLAY-style multiline string. P4 compares controlled P1/P2 against P3 and states FULL/DEGRADED/LOST/NOT_MEASURED. P5 classifies ACCESS/RETRIEVAL/UNDERSTANDING/SELECTION/USAGE gaps only when supported. P6 normalizes one view per AI preserving provenance. P7 merges cross-AI agreement/divergence and explicitly states whether there is a single AI view. Evidence:
