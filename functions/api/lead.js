@@ -11,10 +11,6 @@ export async function onRequestPost(context) {
       email: data.email || "",
       whatsapp: data.whatsapp || "",
       consent: Boolean(data.consent),
-      score: data.score || "",
-      green: data.green || "",
-      yellow: data.yellow || "",
-      red: data.red || "",
       user_agent: data.user_agent || "",
       ip_country: context.request.headers.get("cf-ipcountry") || ""
     };
