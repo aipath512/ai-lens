@@ -35,12 +35,14 @@ export async function onRequestPost(context) {
         send({type:'discovery', status:'COMPLETE', sitemap_status:discovery.sitemapStatus, sitemap_urls:discovery.sitemapUrls, pages:discovery.pages.map((p,i)=>({index:i+1,url:p.url,status:p.status,title:p.title}))});
 
         const results = {};
-        for (let pIndex=0; pIndex<PROVIDERS.length; pIndex++) {
-          const provider = PROVIDERS[pIndex];
+        // Providers run in parallel (each is independent by design); each provider's own
+        // page walk stays sequential internally, since page N's prompt depends on the
+        // accumulated memory from pages 1..N-1 for that provider.
+        await Promise.all(PROVIDERS.map(async (provider, pIndex) => {
           send({type:'provider_start', provider, provider_index:pIndex+1, provider_total:PROVIDERS.length, pages_total:discovery.pages.length});
           results[provider] = await walkProvider(context.env, provider, discovery.pages, send);
           send({type:'provider_done', provider, status:results[provider].status, model:results[provider].model, final_memory:results[provider].final_memory, pages_completed:results[provider].pages_completed, pages_total:discovery.pages.length});
-        }
+        }));
 
         send({type:'phase', phase:'MERGE', status:'RUNNING'});
         const merge = buildDeterministicMerge(results, discovery.pages);
