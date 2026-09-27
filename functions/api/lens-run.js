@@ -220,7 +220,7 @@ async function callOpenAI(env,prompt){
 async function callClaude(env,prompt){
   if(!env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY not configured');
   const model=env.ANTHROPIC_MODEL||'claude-sonnet-5';
-  const r=await fetchTimeout('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':env.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01','Content-Type':'application/json'},body:JSON.stringify({model,max_tokens:2200,messages:[{role:'user',content:prompt}]})},PROVIDER_TIMEOUT_MS);
+  const r=await fetchTimeout('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':env.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01','Content-Type':'application/json'},body:JSON.stringify({model,max_tokens:8192,messages:[{role:'user',content:prompt}]})},PROVIDER_TIMEOUT_MS);
   const j=await r.json(); if(!r.ok) throw new Error(j.error?.message||`Anthropic HTTP ${r.status}`);
   return {model,text:(j.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('\n')};
 }
