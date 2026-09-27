@@ -193,7 +193,7 @@ function buildDeterministicMerge(results,pages){
 function normFact(s){ return String(s).toLowerCase().replace(/[^a-z0-9ăâîșț]+/gi,' ').trim(); }
 
 async function executiveSynthesis(env,target,merge,results){
-  const compact={target,matrix:merge.matrix.map(r=>({field:r.field,state:r.state,coverage:r.coverage,...Object.fromEntries(PROVIDERS.map(p=>[p:(r[p]||[]).slice(0,12)]))}))};
+  const compact={target,matrix:merge.matrix.map(r=>({field:r.field,state:r.state,coverage:r.coverage,...Object.fromEntries(PROVIDERS.map(p=>[p,(r[p]||[]).slice(0,12)]))}))};
   const prompt=`You are AI-LENS final cross-AI business-information synthesizer.\nInput contains four independent website reconstructions after each AI traversed the same HOME+sitemap page list.\nDo NOT perform technical website diagnostics or infer root causes beyond the supplied observations.\nDo NOT invent competitors.\nReturn strict JSON only:\n{\n "business_view":"concise complete reconstruction",\n "stable":["facts consistently visible"],\n "variable":["facts represented inconsistently"],\n "fragile_missing":["important business facts absent or only weakly reconstructed"],\n "conflicts":["material conflicts across AI views"],\n "why_choose_us":"what differentiating case survives across AI, or INCOMPLETE",\n "actions":[{"priority":1,"what":"business information to improve","where":"page/placement inferred only from supplied observations","why":"business impact"}]\n}\nEvidence:\n${JSON.stringify(compact).slice(0,100000)}`;
   const fallbacks=[['OpenAI',callOpenAI],['Claude',callClaude],['Gemini',callGemini],['Perplexity',callPerplexity]];
   for(const [name,fn] of fallbacks){
